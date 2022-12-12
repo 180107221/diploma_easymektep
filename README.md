@@ -89,4 +89,4 @@ As a teacher, i want to get quick sense of my students' progress
 ![mockup, wireframes](https://github.com/SuleymanDemirelKazakhstan/diploma-project-bestapp/blob/main/WhatsApp%20Image%202022-02-14%20at%2023.58.23.jpeg)
 
 ## Future iterations
-To do sheet for students, for personal notes of their work.
+To do sheet for students and teachers, for personal notes of their work.
