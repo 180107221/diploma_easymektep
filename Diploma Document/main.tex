@@ -1,0 +1,97 @@
+\documentclass[a4paper,14pt]{extreport}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+% packages to support Cyrillic fonts, needed to write abstracts
+\usepackage[T2A]{fontenc} 
+\usepackage[utf8]{inputenc} 
+\usepackage[russian,english]{babel}
+\usepackage{csquotes}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{cleveref}
+\usepackage{tabu}
+\usepackage{enumitem,xcolor}
+\usepackage{hyperref,cleveref}
+\usepackage[numbers]{natbib}
+\hypersetup{
+  colorlinks = true,
+  linkcolor = blue
+}
+%
+\usepackage[utf8]{inputenc} 
+\usepackage[russian,english]{babel}
+\usepackage{csquotes}
+
+% usual packages
+\usepackage[left=30mm, right=10mm, top=20mm, bottom=20mm]{geometry}
+
+\usepackage{graphicx} % to add figures
+\graphicspath{{figures/}}
+
+\usepackage{hyperref} % to add clickable contents menu
+
+\usepackage[style=numeric]{biblatex}
+\addbibresource{bibliography.bib}
+
+\usepackage{blindtext}
+%
+
+
+% usual packages
+\usepackage[left=30mm, right=10mm, top=20mm, bottom=20mm]{geometry}
+
+\usepackage{graphicx} % to add figures
+\graphicspath{{figures/}}
+
+\usepackage{hyperref} % to add clickable contents menu
+
+\usepackage[style=numeric]{biblatex}
+\addbibresource{bibliography.bib}
+
+\usepackage{blindtext}
+
+% the following three definitions are to be changed by student
+\def\myauthor{
+Aigerim Mazhtay \\
+Aray Turgyn\\
+Magzhan Kozhakhmet  \\
+Saida Seitzhan 
+}
+\def\mycoach{Ualikhan Sadyk} % coach, adviser etc.
+\def\mytitle{Discipline management system} % title
+\def\mydegree{Bachelor in Computer Systems and Software}
+\def\mydegreecode{6B06102}
+
+
+% preamble ends here
+
+\begin{document}
+    % don't touch these two lines :)
+    
+    \input{titlepage1}
+    \input{titlepage2}
+    
+    % edit abstracts
+    \input{abstract_english}
+    \input{abstract_kazakh}
+    \input{abstract_russian}
+    \tableofcontents
+    
+    % edit your chapters
+    \input{introduction}
+    \input{chapterA}
+    \input{chapterAA}
+    \input{chapterB}
+    \input{chapterC}
+    \input{discussion}
+    \input{conclusion}
+    
+    \appendix
+    \input{appendixA}
+    \input{appendixB}
+    \input{reference}
+    
+    \bibliographystyle{plain}
+    \printbibliography
+\end{document}
