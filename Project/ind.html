@@ -1,0 +1,143 @@
+<div>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./ind.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+  <div id="frm">
+    <form name="f1" action="auth.php" onsubmit="validation()" method="POST">
+    <div class="desktop21327-desktop21327">
+      <div class="desktop21327-frame21328">
+        <div class="desktop21327-frame11329">
+          <div class="desktop21327-group11330">
+            <img src="images/v0_33.png"/>
+          </div>
+        </div>
+        <div class="desktop21327-frame41335">
+          <span class="desktop21327-text">
+            <span class="desktop21327-text01">EASY MEKTEP</span>
+          </span>
+          <span class="desktop21327-text02">
+            <span class="desktop21327-text03">Easy education tracking</span>
+          </span>
+        </div>
+      </div>
+      <div class="desktop21327-frame289891338">
+        <div class="desktop21327-frame289881339">
+          <span class="desktop21327-text04 title">
+            <span class="desktop21327-text05">Nice to see you again!</span>
+          </span>
+          <div class="desktop21327-frame289871341">
+            <div class="desktop21327-inputactive1342">
+              <div class="desktop21327-inputactive-i1342131923">
+                <input class="desktop21327-frame403i1342131924" placeholder="Enter your e-mail or phone number" type="text">
+
+                </input>
+                <div class="desktop21327-frame1i1342131926">
+                  <span class="desktop21327-text08">
+                    <span class="desktop21327-text09">Login</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="desktop21327-group30201343">
+              <div class="desktop21327-inputactive1344">
+                <div class="desktop21327-inputactive-i1344131923">
+                  <input class="desktop21327-frame403i1344131924" type="password" id="pass" name="pass" placeholder="Enter your password"/>
+                  <i class="bi bi-eye-slash" id="togglePassword"></i>
+                  </input>
+                  <div class="desktop21327-frame1i1344131926">
+                    <span class="desktop21327-text14">
+                      <span class="desktop21327-text15">Password</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="desktop21327-frame289781346">
+          <div class="desktop21327-switcher-item-left1347">
+            <div class="desktop21327-switcher1348">
+
+            </div>
+            <span class="desktop21327-text18">
+              <input type="checkbox" name="rememberMe" />
+              <span class="desktop21327-text19">Remember me</span>
+            </span>
+          </div>
+          <span class="desktop21327-text20">
+            <a href="forget_password.php" class="desktop21327-text21">Forgot password?</a>
+          </span>
+        </div>
+      </div>
+      <div class="desktop21327-frame289911355">
+        <input type="submit" id="btn" value="Sign in" class="desktop21327-frame289901356">
+          <span class="desktop21327-text22">
+            <span class="desktop21327-text23">Sing in</span>
+          </span>
+        </input>
+        <div class="desktop21327-sign-up-offer1358">
+          <span class="desktop21327-text24">
+            <span class="desktop21327-text25">Dont have an account?</span>
+          </span>
+          <span class="desktop21327-text26">
+            <a href="reg.php" class="desktop21327-text27">Sign up now</a>
+          </span>
+        </div>
+      </div>
+      <span class="desktop21327-text31">
+        <span class="desktop21327-text32">Easy Mektep</span>
+      </span>
+      <span class="desktop21327-text33">
+        <span class="desktop21327-text34">
+          Education tracker, that helps to improve your skills
+        </span>
+      </span>
+      <div class="desktop21327-character-ikbal21364">
+        <img
+          src="images/v0_49.png"
+        />
+      </div>
+      <div class="desktop21327-character-marni51366">
+        <img
+          src="images/v0_61.png"
+        />
+      </div>
+      <img
+        alt="Line61368"
+        src="/playground_assets/line61368-avfd.svg"
+        class="desktop21327-svg4"
+      />
+    </div>
+  </div>
+</form>
+</div>
+<script>
+        function validation() {
+            var id = document.f1.user.value;
+            var ps = document.f1.pass.value;
+            if (id.length == "" && ps.length == "") {
+                alert("User Name and Password fields are empty");
+                return false;
+            } else {
+                if (id.length == "") {
+                    alert("User Name is empty");
+                    return false;
+                }
+                if (ps.length == "") {
+                    alert("Password field is empty");
+                    return false;
+                }
+            }
+        }
+
+        const togglePassword = document.querySelector("#togglePassword");
+        const password = document.querySelector("#pass");
+
+        togglePassword.addEventListener("click", function() {
+            const type = password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+            this.classList.toggle("bi-eye");
+        });
+    </script>

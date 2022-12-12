@@ -1,0 +1,124 @@
+<style>
+    #container {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+    }
+    
+    #button {
+        display: flex;
+        justify-content: center;
+    }
+    
+    h1 {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+<body>
+    <h1>Timer</h1>
+    <div id="container">
+        <nav>
+            <p id="hour-label" class="label">Hours</p>
+            <input id="hour" type="number" max="99" min="0" value="0" class="time">
+        </nav>
+        <nav>
+            <p id="min-label" class="label">Minutes</p>
+            <input id="minute" type="number" max="60" min="0" value="0" class="time">
+        </nav>
+        <nav>
+            <p id="sec-label" class="label">Seconds</p>
+            <input id="sec" type="number" max="60" min="0" value="0" class="time">
+        </nav>
+    </div>
+    <div id="button">
+        <button id="start" class="btn">Start</button>
+        <button id="reset" class="btn">Reset</button>
+        <button id="stop" class="btn">Stop</button>
+    </div>
+    <script>
+        var start = document.getElementById('start');
+        var reset = document.getElementById('reset');
+        var stop = document.getElementById('stop');
+        stop.disabled = true;
+
+
+
+        var h = document.getElementById("hour");
+        var m = document.getElementById("minute");
+        var s = document.getElementById("sec");
+
+        var startTimer = null;
+
+        if (h.value == 0 && m.value == 0 && s.value == 0) {
+            start.disabled = true;
+        }
+
+        const elements = document.querySelectorAll('.time');
+
+        elements.forEach(element => {
+            element.addEventListener("change", function() {
+                if (h.value != 0 || m.value || 0 || s.value != 0) {
+                    start.disabled = false;
+                }
+                if (h.value == 0 && m.value == 0 && s.value == 0) {
+                    start.disabled = true;
+                }
+            });
+        });
+
+        start.addEventListener('click', function() {
+
+            function startInterval() {
+                startTimer = setInterval(function() {
+                    timer();
+                }, 1000);
+            }
+            startInterval();
+            stop.disabled = false;
+            reset.disabled = true;
+            start.disabled = true;
+        })
+
+        stop.addEventListener('click', function() {
+            stopInterval();
+            h.value = h.value;
+            m.value = m.value;
+            s.value = s.value;
+            start.disabled = false;
+            reset.disabled = false;
+            stop.disabled = true;
+        })
+
+        reset.addEventListener('click', function() {
+            h.value = 0;
+            m.value = 0;
+            s.value = 0;
+            stopInterval();
+        })
+
+        function timer() {
+            if (h.value == 0 && m.value == 0 && s.value == 0) {
+                h.value = 0;
+                m.value = 0;
+                s.value = 0;
+            } else if (s.value != 0) {
+                s.value--;
+            } else if (m.value != 0 && s.value == 0) {
+                s.value = 59;
+                m.value--;
+            } else if (h.value != 0 && m.value == 0) {
+                m.value = 60;
+                h.value--;
+            }
+            return;
+        }
+
+        function stopInterval() {
+            clearInterval(startTimer);
+        }
+    </script>
+</body>
+
+</html>
