@@ -1,0 +1,74 @@
+﻿.title {
+    font-size: 28px;
+}
+.description {
+    font-size: 16px;
+    color: #939DA8;
+}
+.titleForum {
+    font-size: 14px;
+}
+.descriptionForum {
+    font-size: 16px;
+}
+.assignment {
+    font-size: 18px;
+    color: #939DA8;
+    text-align: justify;
+    white-space: nowrap;
+    cursor:pointer;
+}
+.assignmentAct {
+    font-size: 18px;
+    text-align: justify;
+    white-space: nowrap;
+    border-bottom: 2px solid #6B408C;
+    cursor: pointer;
+}
+.mainCourse {
+    border-bottom: 1px solid #EEEEEE;
+}
+.doAssignment {
+    border: 1px solid #EBEDFB;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+.assignmentDate {
+    color: #939DA8;
+    font-size: 14px;
+}
+.assignmentHead {
+    font-weight: 400;
+    font-size: 16px;
+}
+.assignmentStatus {
+    text-align: right;
+    font-weight: 500;
+    font-size: 14px;
+}
+.assignmentProgress {
+    border-radius: 6px;
+    height: 4px;
+    margin-top: 3%;
+}
+.assignmentDropdown {
+    background: #FFFFFF;
+    border: 1px solid #EBEDFB;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.15), 0px 4px 6px rgba(0, 0, 0, 0.06), 0px 6px 12px rgba(33, 52, 69, 0.03);
+    border-radius: 8px 0px 8px 8px;
+    margin-right: 10%;
+}
+.assignmentDropdownitem {
+    font-weight: 400;
+    font-size: 14px;
+}
+@media (max-width: 1000px) {
+    .description {
+        font-size:12px;
+    }
+    .row {
+        margin-left:0px;
+        margin-right:0px;
+    }
+}

@@ -1,0 +1,133 @@
+.timerDesktop {
+    margin-top: 10%;
+}
+.tick {    
+    font-weight: 500;
+    font-size: 72px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px rgba(51, 42, 7, 0.1);
+    border-radius: 8px;
+    padding-bottom: 3%;
+    padding-top: 8%;
+}
+.btnTickStart {
+    font-weight: 600;
+    font-size: 16px;
+    background: #6B408C;
+    border-radius: 4px;
+    color: white;
+}
+.btnTickSet {
+    font-weight: 600;
+    font-size: 16px;
+    background: #FFFFFF;
+    border-radius: 4px;
+}
+.mainTimer {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 100%;
+}
+body {
+    background-color: #FFF9E2;
+    background-image: url('/img/timerBG.svg');
+    background-size: 100%;
+    top:0%;
+    right:0%;
+    left:0%;
+
+}
+html {
+    background: #FFF9E2;
+}
+#setTimer {
+    width: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    left: 0;
+    right: 0;
+    height: 100%;
+    position: absolute;
+    z-index: 999;
+}
+.set {
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px rgba(51, 42, 7, 0.1);
+    border-radius: 8px;
+}
+.btnSet {
+    background: #6B408C;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+}
+.closeBtnImg {
+    cursor:pointer;
+}
+.setTick {
+    font-weight: 500;
+    font-size: 40px;
+}
+.nameTick {
+    font-weight: 500;
+    font-size: 16px;
+    color: #939DA8;
+}
+.tickS {
+    font-weight: 500;
+    font-size: 16px;
+    color: #939DA8;
+    cursor: pointer;
+}
+.scroll {
+    overflow: auto;
+    height: 75%;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0px;
+    right: 0px;
+}
+/* хром, сафари */
+    .scroll::-webkit-scrollbar {
+        width: 0;
+    }
+
+/* ie 10+ */
+.scroll {
+    -ms-overflow-style: none;
+}
+
+/* фф (свойство больше не работает, других способов тоже нет)*/
+.scroll {
+    overflow: -moz-scrollbars-none;
+}
+.btnTickStop {
+    background: #FF6563;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 16px;
+    color: white;
+}
+#stopTimer {
+    width: 52%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 1000px) {
+    .tick {
+        font-size:36px;
+    }
+    .mainTimer {
+        width:100%;
+    }
+    #setTimer {
+        width:70%;
+    }
+}

@@ -1,0 +1,400 @@
+.bannerPc{
+    display:none;
+}
+.chartPC {
+    display:none;
+}
+.lessonPC {
+    display:none;
+}
+.completedActive {
+    background: #EBEDFB;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.completed {
+    cursor: pointer;
+}
+.courseDropdown {
+    background: #FFFFFF;
+    border: 1px solid #EBEDFB;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.15), 0px 4px 6px rgba(0, 0, 0, 0.06), 0px 6px 12px rgba(33, 52, 69, 0.03);
+    border-radius: 8px 0px 8px 8px;
+    margin-right: 10%;
+}
+
+.courseDropdownitem {
+    font-weight: 400;
+    font-size: 14px;
+}
+.slick-dots-Re {
+    background-color: transparent;
+    position: absolute;
+    display: block;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+    top: 100%;
+    height: 0%;
+    color: transparent;
+    left: 35%
+}
+
+    .slick-dots-Re li {
+        position: relative;
+        display: inline-block;
+        margin: 0 5px;
+        padding: 0;
+        cursor: pointer;
+        color: transparent;
+        background-color: transparent;
+    }
+
+        .slick-dots-Re li button:after {
+            color: red;
+        }
+
+        .slick-dots-Re li button {
+            font-size: 0;
+            display: block;
+            padding: 5px;
+            cursor: pointer;
+            border: 0;
+            outline: none;
+            color: transparent;
+            background-color: transparent;
+        }
+
+            .slick-dots-Re li button:hover,
+            .slick-dots-Re li button:focus {
+                outline: none;
+                color: transparent;
+                background-color: transparent;
+            }
+
+                .slick-dots-Re li button:hover:before,
+                .slick-dots-Re li button:focus:before {
+                    color: transparent;
+                    background-color: transparent;
+                }
+
+            .slick-dots-Re li button:before {
+                font-family: 'slick';
+                font-size: 10px;
+                top: 0;
+                left: 0;
+                content: '•';
+                text-align: center;
+                color: #0a090940;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                background-color: transparent;
+                box-shadow: 0 0 10px rgba(0,0,0,0.5);
+                border-radius: 50px;
+            }
+
+        .slick-dots-Re li.slick-active button:before {
+            color: #FFFFFF;
+        }
+.single-item {
+    background: linear-gradient(90deg, #9A6DBC 0%, #6B408C 100%);
+    border-radius: 8px;
+    height:50%
+}
+.bannerMobile {
+    display: inline-flex;
+}
+.bannerCol {
+    width:150%;
+    flex: 0 1 auto;
+}
+.bannerTitle {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 140%;
+    /* or 56px */
+
+    display: flex;
+    align-items: flex-end;
+    /* Base.white */
+
+    color: #FFFFFF;
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 12px 0px;
+}
+.row {
+    width:325px;
+}
+.bannerDesc {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 9px;
+    line-height: 150%;
+    /* or 24px */
+
+    display: flex;
+    align-items: flex-end;
+    /* Base.light grey */
+
+    color: #F6F6F9;
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    margin: 12px 0px;
+}
+.bannerButton {
+    align-items: center;
+    background: #FFFFFF33;
+    border-radius: 4px;
+}
+.bannerButtonText {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 26px;
+    /* identical to box height, or 186% */
+
+    display: flex;
+    align-items: flex-end;
+    text-align: center;
+    /* 3beep. white */
+
+    color: #FFFFFF;
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 0px 10px;
+}
+.bannerImg {
+    width: 100%;
+}
+.slide-arrow {
+    position: absolute;
+    top: 50%;
+    margin-top: -15px;
+}
+.prevArrow {
+    position: absolute;
+    top: 50%;
+    left:3%;
+}
+.nextArrow {
+    position: absolute;
+    top: 50%;
+    right:3%;
+}
+
+.weekdays {
+    margin: 0;    
+}
+
+    .weekdays li {
+        display: inline-block;
+        width: 12%;
+        padding-bottom: 5%;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 140%;
+        color: #939DA8;
+        text-align: center;
+    }
+
+.days {
+    margin: 0;
+}
+
+    .days li {
+        list-style-type: none;
+        display: inline-block;
+        width: 12%;
+        padding-bottom: 5%;
+        text-align: center;
+        margin-bottom: 5px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 140%;
+        color: #5F6264;
+    }
+
+        .days li .active {
+            padding: 5px;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            color: #6B408C;
+            background: #F6EBFE;
+            border-radius: 50px;
+        }
+.task {
+    border-radius: 8px;
+    padding: 18px;
+    border: 1px solid #EBEDFB;
+    margin-top: 15%;
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: bottom
+}
+.taskEx {
+    border-radius: 8px;
+    padding: 18px;
+    border: 1px solid #EBEDFB;
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: bottom;
+    padding-top: 2%;
+    padding-bottom: 0px;
+    margin-right: 1%;
+}
+.daterange {
+    background: #F6F6F9;
+    border-radius: 4px;
+    width: 50%;
+    align-items: center;
+    outline: none;
+}
+
+.btn-success {
+    background-color: #6B408C;
+    border-color: #6B408C;
+}
+.titleDiv {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 136%;
+    /* or 24px */
+
+    display: flex;
+    align-items: flex-end;
+    text-align: right;
+}
+.titleCourse {
+    font-weight: 600;
+    font-size: 18px;
+    padding-left: 0px;
+}
+.titleCourseEx {
+    font-weight: 600;
+    font-size: 18px;
+}
+.footerCourse {
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: 50%;
+}
+.calendarDay {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    /* identical to box height, or 24px */
+
+    display: flex;
+    align-items: flex-end;
+}
+
+
+
+@media (min-width: 200px) {
+    .bannerTitle {
+        font-size: 16px;
+    }
+    .bannerDesc {
+        font-size:12px;
+    }
+}
+
+@media (min-width: 360px) {
+}
+
+@media (min-width: 576px) {
+}
+
+@media (min-width: 600px) {
+}
+
+@media (min-width: 768px) {
+}
+@media (min-width: 980px) {
+}
+@media (min-width: 1200px) {
+    .task {
+        margin-top: 3%;
+        margin-right: 15px;
+    }
+
+    .col {
+        padding-left: 0px;
+    }
+
+    .bannerTitle {
+        font-size: 50px;
+    }
+
+    .bannerDesc {
+        font-size: 16px;
+    }
+
+    #slick {
+        width: 70%;
+        height: 100%;
+    }
+
+    .bannerImg {
+        position: absolute;
+        top: 10%;
+    }
+
+    .col-5 {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .col-8 {
+        padding-left: 0px;
+    }
+    .slick-dots-Re {
+        left:45%;
+        top:85%;
+    }
+        .slick-dots-Re li button:before {
+            color: transparent;
+        }
+    .bannerMobile {
+        display:none
+    }
+    .bannerPc {
+        display:inline-flex;
+    }
+    .chartMobile{
+        display:none;
+    }
+    .chartPC{
+        display:flex;
+    }
+    .lessonPC {
+        display:flex
+    }
+    .lessonMobile {
+        display:none;
+    }
+    .titleCourse {
+        margin-left: 5%;
+    }
+    .footerCourse {
+        margin-left: 5%;
+    }
+}

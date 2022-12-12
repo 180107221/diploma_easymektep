@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+html {
+    background: #FFFFFF;
+    border-radius: 40px;
+    position: relative;
+}
+body {
+    font-family: Poppins;
+}
+.user {
+    white-space: nowrap;
+    color: #222222;
+    font-size: 16px;
+    font-weight: 500;
+}
+.cover {
+    background: #E5E5E5;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 998;
+    opacity: 0.6;
+}
+.iconsMobile {
+    color: #222222;
+    font-size: 16px;
+    font-style: normal;
+}
+.iconsMobileActive {
+    color: #6B408C;
+    font-size: 16px;
+    font-weight: 600;
+    font-style: normal;
+}
+.logout {
+    position: fixed;
+    bottom: 5%;
+    color: #EB5757;
+    font-size: 16px;
+}
+.wrapperMobile {
+    position: absolute;
+    z-index: 999;
+    background-color: white;
+    border-radius: 8px;
+    right: 0px;
+    height: 100%;
+    top: 0px;
+}
+.headImgRow {
+    width: 50px;
+    display: inline-flex
+}
+.mainIcon {
+    width: 50%;
+    height: 50%;
+}
+.icons {
+    width: 70%;
+}
+.headImg {
+    width: 36px;
+}
+.wrapper {
+    background-color: #6B408C;
+    position: absolute;
+    width: 5%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    border-radius: 0px 20px 20px 0px;
+    text-align:center;
+}
+
+    .wrapper #content-wrapper {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+        .wrapper #content-wrapper #content {
+            flex: 1 0 auto;
+        }
+.container {
+    margin-top: 1%;
+    overflow: hidden;
+}
+.title{
+    font-weight: 600;
+    font-size: 22px;
+}
+.title1 {
+    font-weight: 500;
+    font-size: 18px;
+}
+.headDiv {
+    display: inline-flex;
+    width: 85%;
+}
+.navActive {
+    background: #FFFFFF;
+    border-radius: 8px;
+    transform: matrix(1, 0, 0, -1, 0, 0);
+}
+@media (max-width: 1000px) {
+    .wrapper {
+        display:none;
+    }
+}
+
+@media (min-width: 360px) {
+    .title {
+        font-size: 18px;
+    }
+}
+@media (min-width: 450px) {
+    .headDiv {
+        width: 100%;
+    }
+}
+@media (min-width: 576px) {
+    .headDiv{
+        width:115%;
+    }
+}
+
+@media (min-width: 600px) {
+    
+}
+
+@media (min-width: 768px) {
+    .headDiv {
+        width: 140%;
+    }
+}
+@media (max-width:1199px) {
+    .user {
+        display: none;
+    }
+}
+@media (min-width: 1200px) {
+    .container {
+        margin-left: 8%;
+    }
+    .headDiv {
+        width: 160%;
+    }
+    .listHead {
+        display:none;
+    }
+    .user {
+        display:normal;
+    }
+    .headImg {
+        width:48px;
+    }
+    .headImgRow {
+        width: 70px;
+        display: inline-flex
+    }
+}
+@media (min-width: 1500px) {
+    .container {
+        max-width: 1460px;
+    }
+}
+@media (min-width: 1920px) {
+    .container {
+        max-width: 1700px;
+    }
+}

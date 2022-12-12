@@ -1,0 +1,86 @@
+.chartTitle {
+    font-weight: 500;
+    font-size: 18px;
+    color: #545465;
+}
+.prog {
+    font-size: 18px;
+    color: #939DA8;
+}
+.progVal {
+    font-weight: 500;
+    font-size: 32px;
+    color: #222222;
+}
+.block {
+    background: #FFFFFF;
+    /* Secondary.greyish-purple */
+
+    border: 1px solid #EBEDFB;
+    box-sizing: border-box;
+    border-radius: 8px;
+    margin-bottom:5%;
+    padding:3%;
+}
+.plagiarismRangeActive {
+    font-size: 14px;
+    color: #120C17;
+    background: #EFEFEF;
+    cursor:pointer;
+}
+.plagiarismRange {
+    font-size: 14px;
+    color: #7F7B83;
+    cursor: pointer;
+}
+.row {
+    margin-left:0px;
+    margin-right:0px;
+}
+.plagiarism {
+    font-weight: 700;
+    font-size: 14px;
+    color: #222222;
+}
+.plagiarismEx {
+    font-weight: 700;
+    font-size: 16px;
+    color: #7F7B83;
+}
+.completedActive {
+    background: #EBEDFB;
+    border-radius: 2px;
+    cursor:pointer;
+}
+.completed {
+    cursor:pointer;
+}
+.daterange {
+    background: #F6F6F9;
+    border-radius: 4px;
+    width: 50%;
+    align-items: center;
+    outline: none;
+}
+.donut {
+    height: 0px;
+    margin-bottom: 35%;
+}
+.btn-success {
+    background-color: #6B408C;
+    border-color: #6B408C;
+}
+@media (max-width: 1000px) {
+    .prog {
+        font-size: 12px;
+    }
+    .progVal {
+        font-size: 22px;
+    }
+    .daterange {
+        width: 100%;
+    }
+    .donut {
+        margin-bottom: 50%;
+    }
+}

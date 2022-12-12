@@ -1,0 +1,56 @@
+.boxForm {
+    z-index: 0;
+    border: 1px solid #6B408C;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+.labelForm {
+    position: absolute;
+    margin-top: -3%;
+    z-index: 1;
+    background-color: #FFFFFF;
+    font-size: 14px;
+    color: #5F6264;
+}
+.form-control {
+    border: #FFFFFF;
+    font-size: 14px;
+    color: #222222;
+}
+.boxFormRadio {
+    z-index: 0;
+    border: 1px dashed #B5C2E9;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+.btn {
+    background: #6B408C;
+    border-radius: 4px;
+    color:white;
+}
+.successAlert {
+    background: #37C24E;
+    box-shadow: 0px 1px 3px rgba(43, 42, 53, 0.12);
+    border-radius: 4px 4px 0px 0px;
+    height: 58px;
+    z-index: 999;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    color:white;
+}
+.labelFormError {
+    z-index: 0;
+    border: 1px solid #FC514E;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+@media (max-width: 1279px) {
+    .row {
+        display: block;
+    }
+    .col {
+        font-size:12px;
+    }
+}
