@@ -1,0 +1,450 @@
+@using EasyMektep.Models.Statistics
+@using Newtonsoft.Json
+@model StatisticsModel
+@{
+    ViewData["Title"] = "Statistics";
+    int i = 0;
+}
+<head>
+    <link rel="stylesheet" href="~/views/statistics/index.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+</head>
+@section scripts
+{
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="//www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <script type="text/javascript">
+        $('input[name="daterange"]').daterangepicker({
+            locale: {
+                format: 'DD MMM. YYYY'
+            },
+            startDate: '@ViewBag.StartDate',
+            endDate: '@ViewBag.EndDate'
+        },
+            function (start, end, label) {
+                window.location.href = "/Statistics/Index?startDate=" + start.format('YYYY-MM-DD') + '&endDate=' + end.format('YYYY-MM-DD');
+            });
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChartPie);
+        google.charts.setOnLoadCallback(drawChartDonat);
+
+        $(document).ready(function () {
+            if (window.matchMedia("(max-width: 1200px)").matches) {
+                document.getElementById('mainDiv').style.display = 'block';
+                document.getElementById('block').className = 'block col';
+                document.getElementById('curveTitle').className = '';
+                document.getElementById('curveTitle').style.display = 'block';
+                document.getElementById('daterange').className = 'daterange';
+                document.getElementById('descCompleted').style.display = '';
+            }
+            document.getElementById('All time').style.display = 'inline-flex';
+        });
+        function Completed(id) {
+            let completed = 0;
+            let uncompleted = 0;
+            if (id == 'completedTotal') {
+                document.getElementById('completedTotal').className = 'completedActive col';
+                document.getElementById('completedMonth').className = 'completed col';
+                completed = @Html.Raw(Model.Completed.Where(c => c.Range == "Total").FirstOrDefault().Completed);
+                uncompleted = @Html.Raw(Model.Completed.Where(c => c.Range == "Total").FirstOrDefault().Uncompleted);
+            }
+            else
+            {
+                document.getElementById('completedMonth').className = 'completedActive col';
+                document.getElementById('completedTotal').className = 'completed col';
+                completed = @Html.Raw(Model.Completed.Where(c => c.Range == "Month").FirstOrDefault().Completed);
+                uncompleted = @Html.Raw(Model.Completed.Where(c => c.Range == "Month").FirstOrDefault().Uncompleted);
+            }
+
+            var data = google.visualization.arrayToDataTable([
+                ['State', 'Percent'],
+                ['86%', completed], ['14%', uncompleted]
+            ]);
+
+            var options = {
+                legend: 'none',
+                pieStartAngle: 90,
+                pieSliceText: 'percentage',
+                pieSliceTextStyle: { fontName: 'Poppins', fontSize: 14, fontWeight: 400 },
+                slices: {
+                    0: {
+                        color: '#6B408C',
+                    },
+                    1: { color: '#37C24E', offset: 0.2 }
+                }
+            };
+
+            /*var chart = new google.visualization.PieChart(document.getElementById('piechart'));*/
+            var chartPC = new google.visualization.PieChart(document.getElementById('piechartPC'));
+            /*chart.draw(data, options);*/
+            chartPC.draw(data, options);
+        }
+        function Plagiarism(range) {
+            let low = 0;
+            let high = 0;
+            let medium = 0;
+            if (range == "month") {
+                low = @Html.Raw(Model.Plagiarisms.Where(c => c.Range == "Month").FirstOrDefault().Low);
+                high = @Html.Raw(Model.Plagiarisms.Where(c => c.Range == "Month").FirstOrDefault().High);
+                medium = @Html.Raw(Model.Plagiarisms.Where(c => c.Range == "Month").FirstOrDefault().Medium);
+                document.getElementById("month").className = 'plagiarismRangeActive col'
+                document.getElementById("year").className = 'plagiarismRange col'
+                document.getElementById("allTime").className = 'plagiarismRange col'
+                document.getElementById('All time').style.display = 'none';
+                document.getElementById('Month').style.display = 'inline-flex';
+                document.getElementById('Year').style.display = 'none';
+            }
+            else if (range == "year") {
+                low = @Html.Raw(Model.Plagiarisms.Where(c => c.Range == "Year").FirstOrDefault().Low);
+                high = @Html.Raw(Model.Plagiarisms.Where(c => c.Range == "Year").FirstOrDefault().High);
+                medium = @Html.Raw(Model.Plagiarisms.Where(c => c.Range == "Year").FirstOrDefault().Medium);
+                document.getElementById("month").className = 'plagiarismRange col'
+                document.getElementById("year").className = 'plagiarismRangeActive col'
+                document.getElementById("allTime").className = 'plagiarismRange col'
+                document.getElementById('All time').style.display = 'none';
+                document.getElementById('Month').style.display = 'none';
+                document.getElementById('Year').style.display = 'inline-flex';
+            }
+            else {
+                low = @Html.Raw(Model.Plagiarisms.Where(c => c.Range == "All time").FirstOrDefault().Low);
+                high = @Html.Raw(Model.Plagiarisms.Where(c => c.Range == "All time").FirstOrDefault().High);
+                medium = @Html.Raw(Model.Plagiarisms.Where(c => c.Range == "All time").FirstOrDefault().Medium);
+                document.getElementById("month").className = 'plagiarismRange col'
+                document.getElementById("year").className = 'plagiarismRange col'
+                document.getElementById("allTime").className = 'plagiarismRangeActive col'
+                document.getElementById('All time').style.display = 'inline-flex';
+                document.getElementById('Month').style.display = 'none';
+                document.getElementById('Year').style.display = 'none';
+            }
+
+
+            let larguraGraficoFora = 0;
+            let alturaGraficoFora = 0;
+            if (window.matchMedia("(max-width: 1200px)").matches) {
+                larguraGraficoFora = 150;
+                alturaGraficoFora = 150;
+            }
+            else {
+                larguraGraficoFora = 200;
+                alturaGraficoFora = 200;
+            }
+            let furoGraficoFora = 0.7;
+            var data = google.visualization.arrayToDataTable(
+                [
+                    ['Plagiarism', 'Percentage'],
+                    ['Low', low],
+                    ['', 5],
+                    ['High', high],
+                    ['', 5]
+                ]);
+
+            var options = {
+                width: larguraGraficoFora,
+                height: alturaGraficoFora,
+                chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
+                title: "",
+                pieHole: 0.9,
+                pieSliceBorderColor: "none",
+                colors: ['#0BC073', '#EFEFEF', '#EB5757', '#EFEFEF'],
+                legend: {
+                    position: "none"
+                },
+                pieSliceText: "percentage",
+                tooltip: {
+                    trigger: "none"
+                }
+            };
+
+            var data1 = google.visualization.arrayToDataTable(
+                [
+                    ['Plagiarism', 'Percentage'],
+                    ['Medium', medium],
+                    ['', 90]
+                ]);
+
+            var options1 = {
+                title: "",
+                pieHole: 0.9,
+                pieSliceBorderColor: "none",
+                colors: ['#FB9818', '#EFEFEF'],
+                legend: {
+                    position: "none"
+                },
+                pieSliceText: "none",
+                tooltip: {
+                    trigger: "none"
+                },
+                width: larguraGraficoFora * furoGraficoFora,
+                height: alturaGraficoFora * furoGraficoFora,
+                chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
+                backgroundColor: 'transparent',
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('donutchartPC'));
+            var chart1 = new google.visualization.PieChart(document.getElementById('donutchartPC1'));
+            chart.draw(data, options);
+            chart1.draw(data1, options1);
+            ajustePosicaoPieCentral(larguraGraficoFora, alturaGraficoFora, furoGraficoFora);
+        }
+        function drawChart() {
+            var dataPC = new google.visualization.DataTable();
+            dataPC.addColumn('date', 'Date');
+            dataPC.addColumn('number', 'TopLine');
+            dataPC.addColumn('number', 'BottomLine');
+            var arr = [];
+            @foreach (var item in Model.TopLine)
+            {
+            	@:arr.push([new Date("@item.Date"), parseInt("@item.Number"), parseInt("@Model.BottomLine.Where(b=>b.Date==item.Date).FirstOrDefault().Number")])
+            }
+            dataPC.addRows(arr);
+
+            var options = {
+                curveType: 'function',
+                hAxis: {
+                    format: 'dd/MM',
+                },
+                colors: ['#6B408C','#FFD600'],
+                'chartArea': { 'width': '90%', 'height': '80%' },
+                legend: 'none',
+                pointSize: 5
+            };
+
+            var chartPC = new google.visualization.LineChart(document.getElementById('curve_chartPC'));
+            chartPC.draw(dataPC, options);
+        }
+        function drawChartPie() {
+            let larguraGraficoFora = 0;
+            let alturaGraficoFora = 0;
+            if (window.matchMedia("(max-width: 1200px)").matches) {
+                larguraGraficoFora = 130;
+                alturaGraficoFora = 130;
+            }
+            else {
+                larguraGraficoFora = 200;
+                alturaGraficoFora = 200;
+            }
+            var data = google.visualization.arrayToDataTable([
+                ['State', 'Percent'],
+                ['86%', @Html.Raw(Model.Completed.Where(c => c.Range == "Total").FirstOrDefault().Completed)], ['14%', @Html.Raw(Model.Completed.Where(c => c.Range == "Total").FirstOrDefault().Uncompleted)]
+            ]);
+
+            var options = {
+                width: larguraGraficoFora,
+                height: alturaGraficoFora,
+                legend: 'none',
+                pieStartAngle: 90,
+                pieSliceText: 'percentage',
+                pieSliceTextStyle: { fontName: 'Poppins', fontSize: 14, fontWeight: 400 },
+                slices: {
+                    0: {
+                        color: '#6B408C',
+                    },
+                    1: { color: '#37C24E', offset: 0.2 }
+                }
+            };
+
+            /*var chart = new google.visualization.PieChart(document.getElementById('piechart'));*/
+            var chartPC = new google.visualization.PieChart(document.getElementById('piechartPC'));
+            /*chart.draw(data, options);*/
+            chartPC.draw(data, options);
+        }
+        function drawChartDonat() {
+            //control is here
+            let larguraGraficoFora = 0;
+            let alturaGraficoFora = 0;
+            if (window.matchMedia("(max-width: 1200px)").matches) {
+                larguraGraficoFora = 150;
+                alturaGraficoFora = 150;
+            }
+            else {
+                larguraGraficoFora = 200;
+                alturaGraficoFora = 200;
+            }
+            let furoGraficoFora = 0.7;
+            var data = google.visualization.arrayToDataTable(
+                [
+                    ['Plagiarism', 'Percentage'],
+                    ['Low', @Html.Raw(Model.Plagiarisms.Where(c => c.Range == "All time").FirstOrDefault().Low)],
+                    ['', 5],
+                    ['High', @Html.Raw(Model.Plagiarisms.Where(c => c.Range == "All time").FirstOrDefault().High)],
+                    ['', 5]
+                ]);
+
+            var options = {
+                width: larguraGraficoFora,
+                height: alturaGraficoFora,
+                chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
+                title: "",
+                pieHole: 0.9,
+                pieSliceBorderColor: "none",
+                colors: ['#0BC073', '#EFEFEF', '#EB5757', '#EFEFEF'],
+                legend: {
+                    position: "none"
+                },
+                pieSliceText: "percentage",
+                tooltip: {
+                    trigger: "none"
+                }
+            };
+
+            var data1 = google.visualization.arrayToDataTable(
+                [
+                    ['Plagiarism', 'Percentage'],
+                    ['Medium', @Html.Raw(Model.Plagiarisms.Where(c => c.Range == "All time").FirstOrDefault().Medium)],
+                    ['', 90]
+                ]);
+
+            var options1 = {
+                title: "",
+                pieHole: 0.9,
+                pieSliceBorderColor: "none",
+                colors: ['#FB9818', '#EFEFEF'],
+                legend: {
+                    position: "none"
+                },
+                pieSliceText: "none",
+                tooltip: {
+                    trigger: "none"
+                },
+                width: larguraGraficoFora * furoGraficoFora,
+                height: alturaGraficoFora * furoGraficoFora,
+                chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
+                backgroundColor: 'transparent',
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('donutchartPC'));
+            var chart1 = new google.visualization.PieChart(document.getElementById('donutchartPC1'));
+            chart.draw(data, options);
+            chart1.draw(data1, options1);
+            ajustePosicaoPieCentral(larguraGraficoFora, alturaGraficoFora, furoGraficoFora);
+        }
+        function ajustePosicaoPieCentral(largura, altura, furo) {
+
+            yt = altura * (1 + furo) / 2.0;
+            xt = largura * (1 - furo) / 2.0;
+
+            var css = document.getElementById('donutchartPC1');
+            css.style.transform = "translate(" + xt + "px, -" + yt + "px)";
+        }
+    </script>
+}
+<div class="statisticDesktop mt-5" id="mainDiv" style="display:flex">
+    <div class="block col-7" id="block">
+        <div id="curveTitle" class="row" style="display: flex;">
+            <div class="titleDiv col" style="white-space:nowrap">Number of completed tasks</div>
+
+            <div class="col" style="font-size:12px">
+                <input id="daterange" class="daterange float-right" type="text" name="daterange"/>
+            </div>
+        </div>
+        <div style="width:100%; height: 100%" id="curve_chartPC"></div>
+    </div>
+    <div class="col">
+        <div class="block" style="padding: 5%;">
+            <div style="display:flex">
+                <div class="prog col">Progress</div>
+                <div class="prog col">Remaining</div>
+                <div class="prog col">Time spent</div>
+            </div>
+            <div style="display:flex">
+                <div class="progVal col">@Model.Progress.Progress%</div>
+                <div class="progVal col">@Model.Progress.Remaining hrs</div>
+                <div class="progVal col">@Model.Progress.TimeSpent hrs</div>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="chartTitle">Task plagiarism</div>
+            <div class="row mt-3">
+                <div style="display:inline-flex">
+                    <div id="allTime" class="plagiarismRangeActive col" onclick="Plagiarism('allTime')" style="white-space:nowrap">All time</div>
+                    <div id="month" class="plagiarismRange col" onclick="Plagiarism('month')" style="white-space:nowrap">Month</div>
+                    <div id="year" class="plagiarismRange col" onclick="Plagiarism('year')" style="white-space:nowrap">Year</div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                @foreach (PlagiarismModel item in Model.Plagiarisms)
+                {
+                    <div id="@item.Range" style="display:none">
+                        <div class="plagiarism col" style="white-space:nowrap">Low - @item.Low%</div>
+                        <div class="plagiarism col" style="white-space:nowrap">Medium - @item.Medium%</div>
+                        <div class="plagiarism col" style="white-space:nowrap">High - @item.High%</div>
+                    </div>
+                }
+            </div>
+            <div class="mt-5" style="display:flex">
+                <div class="donut col">
+                    <div>
+                        <div id="donutchartPC">
+                        </div>
+                        <div id="donutchartPC1"></div>
+                    </div>
+
+                </div>
+                <div class="col align-self-center">
+                    <div class="row">
+                        <div class="plagiarismEx col">
+                            High
+                        </div>
+                        <div class="col">
+                            <img src="~/img/highChart.svg" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="plagiarismEx col">
+                            Medium
+                        </div>
+                        <div class="col">
+                            <img src="~/img/mediumChart.svg" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="plagiarismEx col">
+                            Low
+                        </div>
+                        <div class="col">
+                            <img src="~/img/lowChart.svg" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="block">
+            <div class="row-form" style="display: flex">
+
+                <div class="chartTitle">Completed tasks</div>
+            </div>
+            <div class="row-form" style="display:flex;">
+                <div class="col">
+                    <div id="piechartPC"></div>
+                </div>
+                <div class="col align-self-center">
+                    <div style="display:inline-flex">
+                        <div onclick="Completed('completedTotal')" id="completedTotal" class="completedActive col">Total</div>
+                        <div onclick="Completed('completedMonth')" id="completedMonth" class="completed col">Month</div>
+                    </div>
+                    <div class="mt-4" style="font-size:14px">Total amount of tasks 100</div>
+                    <div class="mt-2" id="descCompleted" style="display:inline-flex">
+                        <div class="col" style="display:flex">
+                            <div class="col" style="padding-right: 0px;padding-left: 0px;"><img src="~/img/green.svg" /></div>
+                            <div class="col align-self-center" style="padding-right: 0px; font-size: 12px">Completed</div>
+                        </div>
+                        <div class="col" style="display:flex">
+                            <div class="col" style="padding-right:0px;padding-left: 0px;"><img src="~/img/purple.svg" /></div>
+                            <div class="col align-self-center" style="padding-right: 0px; font-size: 12px">Uncompleted</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

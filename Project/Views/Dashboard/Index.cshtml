@@ -1,0 +1,488 @@
+@using EasyMektep.Models.Dashboard
+@using EasyMektep.Models.Projects
+@using EasyMektep.Models.Statistics
+@model DashboardModel
+@{
+    ViewBag.Title = "Dashboard";
+    DateTime nowTime = DateTime.Now;
+    int maxDayInMonth = new DateTime(nowTime.Year, nowTime.Month + 1, 1).AddDays(-1).Day;
+    int beginWeekDay = (int)new DateTime(nowTime.Year, nowTime.Month, 1).DayOfWeek;
+    if (beginWeekDay == 0)
+        beginWeekDay = 7;
+    var dateFormatInfo = System.Globalization.CultureInfo.GetCultureInfo("en-GB").DateTimeFormat;
+
+}
+<head>
+    <link rel="stylesheet" href="~/views/dashboard/index.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+</head>
+@section scripts
+{
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="//www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <script type="text/javascript">
+        $('input[name="daterange"]').daterangepicker({
+            locale: {
+                format: 'DD MMM. YYYY'
+            },
+            startDate: '@ViewBag.StartDate',
+            endDate: '@ViewBag.EndDate'
+        },
+            function (start, end, label) {
+                window.location.href = "/Dashboard/Index?startDate=" + start.format('YYYY-MM-DD') + '&endDate=' + end.format('YYYY-MM-DD');
+            });
+        function CurveChart(range) {
+            if (range == 'Total') {
+                document.getElementById('totalOnM').style.display = '';
+                document.getElementById('totalOn').style.display = '';
+                document.getElementById('newOnM').style.display = 'none';
+                document.getElementById('newOn').style.display = 'none';
+                document.getElementById('totalOff').style.display = 'none';
+                document.getElementById('totalOffM').style.display = 'none';
+                document.getElementById('newOffM').style.display = '';
+                document.getElementById('newOff').style.display = '';
+                var data = new google.visualization.DataTable();
+                data.addColumn('date', 'xs');
+                data.addColumn('number', 'y');
+                var arrM = [];
+                @foreach (var item in Model.TotalCompleted.Take(3).ToList())
+                {
+                	@:arrM.push([new Date("@item.Date"), parseInt("@item.Number")])
+                }
+                data.addRows(arrM);
+                var dataPC = new google.visualization.DataTable();
+                dataPC.addColumn('date', 'xs');
+                dataPC.addColumn('number', 'y');
+                var arr = [];
+                @foreach (var item in Model.TotalCompleted)
+                {
+                	@:arr.push([new Date("@item.Date"), parseInt("@item.Number")])
+                }
+                dataPC.addRows(arr);
+                var options = {
+                    curveType: 'function',
+                    hAxis: {
+                        format: 'dd/MM',
+                    },
+                    colors: ['#6B408C'],
+                    'chartArea': { 'width': '90%', 'height': '80%' },
+                    legend: 'none',
+                    pointSize: 5
+                };
+                var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+                var chartPC = new google.visualization.LineChart(document.getElementById('curve_chartPC'));
+                chart.draw(data, options);
+                chartPC.draw(dataPC, options);
+            }
+            else {
+                document.getElementById('totalOnM').style.display = 'none';
+                document.getElementById('totalOn').style.display = 'none';
+                document.getElementById('newOnM').style.display = '';
+                document.getElementById('newOn').style.display = '';
+                document.getElementById('totalOff').style.display = '';
+                document.getElementById('totalOffM').style.display = '';
+                document.getElementById('newOffM').style.display = 'none';
+                document.getElementById('newOff').style.display = 'none';
+                var data = new google.visualization.DataTable();
+                data.addColumn('date', 'xs');
+                data.addColumn('number', 'y');
+                var arrM = [];
+                @foreach (var item in Model.NewCompleted.Take(3).ToList())
+                {
+                	@:arrM.push([new Date("@item.Date"), parseInt("@item.Number")])
+                }
+                data.addRows(arrM);
+                var dataPC = new google.visualization.DataTable();
+                dataPC.addColumn('date', 'xs');
+                dataPC.addColumn('number', 'y');
+                var arr = [];
+                @foreach (var item in Model.NewCompleted)
+                {
+                	@:arr.push([new Date("@item.Date"), parseInt("@item.Number")])
+                }
+                dataPC.addRows(arr);
+                var options = {
+                    curveType: 'function',
+                    hAxis: {
+                        format: 'dd/MM',
+                    },
+                    colors: ['#6B408C'],
+                    'chartArea': { 'width': '90%', 'height': '80%' },
+                    legend: 'none',
+                    pointSize: 5
+                };
+                var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+                var chartPC = new google.visualization.LineChart(document.getElementById('curve_chartPC'));
+                chart.draw(data, options);
+                chartPC.draw(dataPC, options);
+            }
+        }
+        function Complete(id) {
+            $.ajax({
+                type: "POST",
+                url: "/Projects/Complete",
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    document.location.reload();
+                }
+            });
+        }
+        function Delete(id) {
+            $.ajax({
+                type: "POST",
+                url: "/Projects/Delete",
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    document.location.reload();
+                }
+            });
+        }
+        function Completed(id) {
+            let completed = 0;
+            let uncompleted = 0;
+            if (id == 'completedTotal' || id == 'completedTotalMobile') {
+                document.getElementById('completedTotal').className = 'completedActive col';
+                document.getElementById('completedMonth').className = 'completed col';
+                document.getElementById('completedTotalMobile').className = 'completedActive col';
+                document.getElementById('completedMonthMobile').className = 'completed col';
+                completed = @Html.Raw(Model.Completed.Where(c => c.Range == "Total").FirstOrDefault().Completed);
+                uncompleted = @Html.Raw(Model.Completed.Where(c => c.Range == "Total").FirstOrDefault().Uncompleted);
+            }
+            else
+            {
+                document.getElementById('completedMonth').className = 'completedActive col';
+                document.getElementById('completedTotal').className = 'completed col';
+                document.getElementById('completedMonthMobile').className = 'completedActive col';
+                document.getElementById('completedTotalMobile').className = 'completed col';
+                completed = @Html.Raw(Model.Completed.Where(c => c.Range == "Month").FirstOrDefault().Completed);
+                uncompleted = @Html.Raw(Model.Completed.Where(c => c.Range == "Month").FirstOrDefault().Uncompleted);
+            }
+            var data = google.visualization.arrayToDataTable([
+                ['State', 'Percent'],
+                ['86%', completed], ['14%', uncompleted]
+            ]);
+            var options = {
+                legend: 'none',
+                pieStartAngle: 90,
+                pieSliceText: 'percentage',
+                pieSliceTextStyle: { fontName: 'Poppins', fontSize: 14, fontWeight: 400 },
+                slices: {
+                    0: {
+                        color: '#6B408C',
+                    },
+                    1: { color: '#37C24E', offset: 0.2 }
+                }
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            var chartPC = new google.visualization.PieChart(document.getElementById('piechartPC'));
+            chart.draw(data, options);
+            chartPC.draw(data, options);
+        }
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChartPie);
+        $(document).ready(function () {
+            document.getElementById('mainRow').style.display = '';
+            $('.single-item').slick({
+                infinite: true,
+                dots: true,
+                autoplay: true,
+                autoplaySpeed: 3000,
+                fade: false,
+                fadeSpeed: 1000,
+                cssEase: 'linear',
+                arrows: true,
+                dotsClass: 'slick-dots-Re',
+                prevArrow: '<img class="prevArrow" src="../img/VectorL.svg" />',
+                nextArrow: '<img class="nextArrow" src="../img/VectorR.svg" />'
+            }
+            );
+            setInterval(startTime, 100);
+            if (window.matchMedia("(min-width: 1200px)").matches) {
+                document.getElementById('calendar').className = 'taskEx col-3';
+                document.getElementById('slick').className = 'col';
+                document.getElementById('mainRow').style.display = 'flex';
+            }
+        });
+        //#6B408C
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('date', 'xs');
+            data.addColumn('number', 'y');
+            var arrM = [];
+            @foreach (var item in Model.TotalCompleted.Take(3).ToList())
+            {
+            	@:arrM.push([new Date("@item.Date"), parseInt("@item.Number")])
+            }
+            data.addRows(arrM);
+            var dataPC = new google.visualization.DataTable();
+            dataPC.addColumn('date', 'xs');
+            dataPC.addColumn('number', 'y');
+            var arr = [];
+            @foreach (var item in Model.TotalCompleted)
+            {
+            	@:arr.push([new Date("@item.Date"), parseInt("@item.Number")])
+            }
+            dataPC.addRows(arr);
+            var options = {
+                curveType: 'function',
+                hAxis: {
+                    format: 'dd/MM',
+                },
+                colors: ['#6B408C'],
+                'chartArea': { 'width': '90%', 'height': '80%' },
+                legend: 'none',
+                pointSize: 5
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+            var chartPC = new google.visualization.LineChart(document.getElementById('curve_chartPC'));
+            chart.draw(data, options);
+            chartPC.draw(dataPC, options);
+        }
+        function drawChartPie() {
+            var data = google.visualization.arrayToDataTable([
+                ['State', 'Percent'],
+                ['86%', 86], ['14%', 14]
+            ]);
+            var options = {
+                legend: 'none',
+                pieStartAngle: 90,
+                pieSliceText: 'percentage',
+                pieSliceTextStyle: { fontName: 'Poppins', fontSize: 14, fontWeight: 400 },
+                slices: {
+                    0: {
+                        color: '#6B408C',
+                    },
+                    1: { color: '#37C24E', offset: 0.2 }
+                }
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            var chartPC = new google.visualization.PieChart(document.getElementById('piechartPC'));
+            chart.draw(data, options);
+            chartPC.draw(data, options);
+        }
+        function startTime() {
+            const today = new Date();
+            let h = today.getHours();
+            let m = today.getMinutes();
+            m = checkTime(m);
+            let ampm = (h >= 12) ? "PM" : "AM";
+            document.getElementById('timeJS').innerHTML = h + ":" + m + " " + ampm;
+        }
+        function checkTime(i) {
+            if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+            return i;
+        }
+    </script>
+}
+<div class="row-form" id="mainRow" style="display:none">
+    <div id="slick">
+        <div class="single-item col col-xxl-8" style="margin-bottom: 0px;">
+            @foreach (BannerModel banner in Model.Banners)
+            {
+                <div>
+                    <div class="bannerMobile">
+                        <div class="bannerCol">
+                            <div class="row-form"><p class="bannerTitle">@Html.Raw(banner.Title)</p></div>
+                            <div class="row-form"><p class="bannerDesc">@Html.Raw(banner.Description)</p></div>
+
+                            <div class="row-form" style="display: inline-flex">
+                                <div class="col" style="align-self: center;"><button class="btn btn-block bannerButton" href="@banner.ButtonUrl"><p class="bannerButtonText">@banner.ButtonName</p></button></div>
+                                <div class="col"><img class="bannerImg" src="@banner.ImgUrl" /></div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="bannerPc">
+                        <div class="col" style="padding: 24px;margin-left: 24px;">
+                            <div><p class="bannerTitle">@Html.Raw(banner.Title)</p></div>
+                            <div><p class="bannerDesc">@Html.Raw(banner.Description)</p></div>
+                            <div class="col-5 mt-4"><button class="btn btn-block bannerButton" href="@banner.ButtonUrl"><p class="bannerButtonText justify-content-center">@banner.ButtonName</p></button></div>
+                        </div>
+                        <div class="col-5"><img class="bannerImg" src="@banner.ImgUrl" /></div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="task col" id="calendar">
+        <div class="ml-5">
+            <div class="titleDiv" id="timeJS"></div>
+            <div class="calendarDay mb-3" id="dayJS">@nowTime.DayOfWeek, @dateFormatInfo.GetMonthName(nowTime.Month)  @nowTime.Day</div>
+        </div>
+        <ul class="weekdays">
+            <li>mn</li>
+            <li>tu</li>
+            <li>we</li>
+            <li>th</li>
+            <li>fr</li>
+            <li>st</li>
+            <li>sn</li>
+        </ul>
+
+        <ul class="days">
+            @for (int i = 1; i < beginWeekDay; i++)
+            {
+                <li></li>
+            }
+            @for (int i = 1; i <= maxDayInMonth; i++)
+            {
+                if (DateTime.Now.Day == i)
+                {
+                    <li><span class="active">@i</span></li>
+                }
+                else
+                {
+                    <li>@i</li>
+                }
+            }
+        </ul>
+    </div>
+
+</div>
+<div class="chartMobile">
+    <div class="task col">
+        <div class="titleDiv">Number of completed tasks</div>
+        <div>
+            <div class="mt-3"><input class="daterange" style="width:100%" type="text" name="daterange" /></div>
+            <div class="mt-3" style="display:flex"  >
+                <div style="display:flex" onclick="CurveChart('Total')" class="col">
+                    <div class="col">
+                        <img class="float-right" id="totalOnM" src="~/icons/radioOnBut.svg" />
+                        <img class="float-right"  style="display:none" id="totalOffM" src="~/icons/radioOffBut.svg" />
+                    </div>
+                    <div class="col">
+                        Total
+                    </div>
+                </div>
+                <div style="display:flex" onclick="CurveChart('New')" class="col">
+                    <div class="col">
+                        <img class="float-right"  style="display:none" id="newOnM" src="~/icons/radioOnBut.svg" />
+                        <img class="float-right"  id="newOffM" src="~/icons/radioOffBut.svg" />
+                    </div>
+                    <div class="col">
+                        New
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div id="curve_chart"></div>
+    </div>
+
+    <div class="task col">
+        <div class="row-form" style="display:flex;">
+
+            <div class="titleDiv">Completed tasks</div>
+            <div class="col" style="text-align:right">
+                <a href="*">More</a>
+            </div>
+        </div>
+        <div class="row-form" style="display:flex;">
+
+            <div onclick="Completed('completedTotalMobile')" id="completedTotalMobile" class="completedActive col">Total</div>
+            <div onclick="Completed('completedMonthMobile')" id="completedMonthMobile" class="completed col">Month</div>
+        </div>
+        <div id="piechart"></div>
+    </div>
+</div>
+
+<div class="chartPC">
+    <div class="task col-8" style="margin-right:15px;">
+        <div class="row-form" style="display: flex;margin-left: 5%;">
+            <div class="titleDiv col">Number of completed tasks</div>
+
+            <div class="col" style="font-size:12px"><input class="daterange" type="text" name="daterange" /></div>
+            <div class="col float-right" style="display:flex">
+                <div onclick="CurveChart('Total')" class="col" style="display:flex">
+                    <div class="col">
+                        <img class="float-right"  id="totalOn" src="~/icons/radioOnBut.svg" />
+                        <img class="float-right"  style="display:none" id="totalOff" src="~/icons/radioOffBut.svg" />
+                    </div>
+                    <div class="col">
+                        Total
+                    </div>
+                </div>
+                <div onclick="CurveChart('New')" class="col" style="display:flex">
+                    <div class="col">
+                        <img class="float-right" style="display:none" id="newOn" src="~/icons/radioOnBut.svg" />
+                        <img class="float-right"  id="newOff" src="~/icons/radioOffBut.svg" />
+                    </div>
+                    <div class="col">
+                        New
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="curve_chartPC"></div>
+    </div>
+
+    <div class="task col">
+        <div class="row-form" style="display: flex">
+
+            <div class="titleDiv" style="margin-left: 5%;">Completed tasks</div>
+            <div class="col" style="text-align:right">
+                <a href="/Statistics/Index">More</a>
+            </div>
+        </div>
+        <div class="row-form" style="display:flex;">
+            <div class="col">
+                <div id="piechartPC"></div>
+            </div>
+            <div class="col">
+                <div class="mt-5" style="display:inline-flex">
+                    <div onclick="Completed('completedTotal')" id="completedTotal" class="completedActive col">Total</div>
+                    <div onclick="Completed('completedMonth')" id="completedMonth" class="completed col">Month</div>
+                </div>
+                <div class="mt-4" style="font-size:14px">Total amount of tasks 100</div>
+                <div class="mt-2" style="display:inline-flex">
+                    <div class="col" style="font-size:12px">Completed</div>
+                    <div class="col" style="font-size:12px">Uncompleted</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="lessonMobile">
+    @foreach (CourseCardModel course in Model.Courses)
+    {
+        <div class="task" style="background-image: url('@course.ImgUrl');">
+            <div class="row-form">
+                <div onclick="location.href='/Projects/Course?Id=@course.Id'" style="cursor:pointer" class="titleCourse col-8  float-left">@course.Title</div>
+                <div class="titleCourseEx col-1 align-self-center float-right" style="cursor:pointer" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">...</div>
+                <div class="dropdown-menu courseDropdown" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item courseDropdownitem" href="#" onclick="Complete(@course.Id)">Mark as complete</a>
+                    <a class="dropdown-item courseDropdownitem" style="color: #EB5757" href="#" onclick="Delete(@course.Id)">Delete course</a>
+                </div>
+            </div>
+            <div class="footerCourse">@course.Teacher</div>
+        </div>
+    }
+</div>
+<div class="lessonPC">
+    @foreach (CourseCardModel course in Model.Courses)
+    {
+        <div class="task col" style="background-image: url('@course.ImgUrl');">
+            <div class="row-form">
+                <div onclick="location.href='/Projects/Course?Id=@course.Id'" style="cursor:pointer" class="titleCourse col-8  float-left">@course.Title</div>
+                <div class="titleCourseEx col-1 align-self-center float-right" style="cursor:pointer" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">...</div>
+                <div class="dropdown-menu courseDropdown" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item courseDropdownitem" href="#" onclick="Complete(@course.Id)">Mark as complete</a>
+                    <a class="dropdown-item courseDropdownitem" style="color: #EB5757" href="#" onclick="Delete(@course.Id)">Delete course</a>
+                </div>
+            </div>
+            <div class="footerCourse">@course.Teacher</div>
+        </div>
+    }
+</div>

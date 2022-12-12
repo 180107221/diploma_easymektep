@@ -1,0 +1,181 @@
+@using System.Security.Claims;
+@{
+    ViewData["Title"] = "Settings";
+}
+<head>
+    <link rel="stylesheet" href="~/views/setting/index.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+</head>
+@section scripts
+{
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (window.matchMedia("(max-width: 1279px)").matches) {
+                document.getElementById('tempForPC').style.display = 'none';
+                document.getElementById('personPhoto').style.display = 'none';
+                document.getElementById('personInfo').className = 'col';
+            }
+        });
+        function Save() {
+            let i = 0;
+            if (document.getElementById("firstName").value == "") {
+                i++;
+                document.getElementById("nameBox").className = 'labelFormError col mt-3 mr-4';
+                document.getElementById("nameError").style.display = "";
+            }
+            else {
+                document.getElementById("nameBox").className = 'boxForm col mt-3 mr-4';
+                document.getElementById("nameError").style.display = "none";
+            }
+            if (document.getElementById("secondName").value == "") {
+                i++;
+                document.getElementById("surnameBox").className = 'labelFormError col mt-3';
+                document.getElementById("surnameError").style.display = "";
+            }
+            else {
+                document.getElementById("surnameBox").className = 'boxForm col mt-3';
+                document.getElementById("surnameError").style.display = "none";
+            }
+            if (document.getElementById("email").value == "") {
+                i++;
+                document.getElementById("emailBox").className = 'labelFormError col mt-3 mr-4';
+                document.getElementById("emailError").style.display = "";
+            }
+            else {
+                document.getElementById("emailBox").className = 'boxForm col mt-3 mr-4';
+                document.getElementById("emailError").style.display = "none";
+            }
+            if (document.getElementById("birthDay").value == "") {
+                i++;
+                document.getElementById("birthDayBox").className = 'labelFormError col mt-3';
+                document.getElementById("birthDayError").style.display = "";
+            }
+            else {
+                document.getElementById("birthDayBox").className = 'boxForm col mt-3';
+                document.getElementById("birthDayError").style.display = "none";
+            }
+            if (!document.getElementById('woman').checked && !document.getElementById('man').checked && !document.getElementById('notSay').checked) {
+                i++;
+                document.getElementById("radioBox").className = 'boxFormRadioError col-7 mt-3 mr-4';
+                document.getElementById("radioError").style.display = "";
+            }
+            else {
+                document.getElementById("radioBox").className = 'boxFormRadio col-7 mt-3 mr-4';
+                document.getElementById("radioError").style.display = "none";
+            }
+            if (i == 0) {
+                let name = document.getElementById("firstName").value;
+                let surname = document.getElementById("secondName").value;
+                let email = document.getElementById("email").value;
+                let birthDay = document.getElementById("birthDay").value;
+                let gender = 0;
+                if (document.getElementById('woman').checked) {
+                    gender = 1;
+                } else if (document.getElementById('man').checked) {
+                    gender = 2;
+                }
+                else {
+                    gender = 3;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/Setting/Change",
+                    data: {
+                        Name: name,
+                        Surname: surname,
+                        Email: email,
+                        BirthDay: birthDay,
+                        Gender: gender
+                    },
+                    success: function (data) {
+                        document.getElementById('successAlert').style.display = '';
+                    }
+                });
+            }
+        }
+    </script>
+}
+    <div style="display:none" id="successAlert" class="successAlert">
+        <div class="container">
+            <div class="row" style="display:flex">
+                <div class="col" style="display:flex; font-weight: 500; font-size: 14px;">
+                    <img src="~/icons/success.svg" />
+                    <div class="col align-self-center">
+                        Personal data successfully
+                    </div>
+                </div>
+                <div class="col">
+                    <a style="text-decoration: underline; font-weight: 400; font-size: 14px; color: white" class="float-right" href="/Dashboard/Index">Return to profile page</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<div style="display:flex">
+    <div class="col-2 mr-5" style="padding-left:0px;">
+        <div style="display:flex; cursor:pointer">
+            <div style="padding-left: 0px;" class="col-1"><img src="~/icons/personal.svg" /></div>
+            <div onclick="location.href='/Setting/Index'" style="padding-left: 10px; font-weight: 600; font-size: 16px; color: #6B408C;" class="col">Personal data</div>
+        </div>
+        <div onclick="location.href='/Setting/PrivatePolicy'"  style="cursor: pointer;font-size: 14px; color: #939DA8;" class="mt-3">Privacy policy</div>
+        <div onclick="location.href='/Setting/ChangePassword'"  style="cursor: pointer;font-size: 14px; color: #939DA8;" class="mt-3">Change password</div>
+    </div>
+    <div id="personPhoto" class="col-1 mr-5">
+        <div>
+            <img style="height: auto;width: 100%; border-radius: 100px;" src="@User.FindFirst(System.Security.Claims.ClaimTypes.Uri).Value" />
+        </div>
+    </div>
+    <div id="personInfo" class="col-6">
+        <div style="font-weight: 500; font-size: 16px; color:#222222">Personal data</div>
+        <div style="font-weight: 400; font-size: 14px; color: #676565;" class="mt-3">Your data is only visible to you</div>
+        <div class="mt-3">
+            <div class="row">
+                <div id="nameBox" class="boxForm col mt-3 mr-4">
+                    <label class="labelForm"><abbr style="color:#ffffff">_</abbr>First name  <img id="nameError" style="display:none" src="~/icons/error.svg" />  <abbr style="color:#ffffff">_</abbr></label>
+                    <input id="firstName" class="form-control mt-2" name="name" value="@User.FindFirst(ClaimTypes.Name).Value" />
+                </div>
+                <div id="surnameBox" class="boxForm col mt-3">
+                    <label class="labelForm"><abbr style="color:#ffffff">_</abbr>Second name <img id="surnameError" style="display:none" src="~/icons/error.svg" />  <abbr style="color:#ffffff">_</abbr></label>
+                    <input id="secondName" class="form-control mt-2" name="surname" value="@User.FindFirst(ClaimTypes.Surname).Value" />
+                </div>
+            </div>
+            <div class="row">
+                <div id="emailBox" class="boxForm col mt-3 mr-4">
+                    <label class="labelForm"><abbr style="color:#ffffff">_</abbr>E-mail <img id="emailError" style="display:none" src="~/icons/error.svg" />  <abbr style="color:#ffffff">_</abbr></label>
+                    <input id="email" class="form-control mt-2" name="email" value="@User.FindFirst(ClaimTypes.Email).Value" />
+                </div>
+                <div id="birthDayBox" class="boxForm col mt-3">
+                    <label class="labelForm"><abbr style="color:#ffffff">_</abbr>Birth day <img id="birthDayError" style="display:none" src="~/icons/error.svg" />  <abbr style="color:#ffffff">_</abbr></label>
+                    <input id="birthDay" type="date" name="birthDay"  class="form-control mt-2" value="@Convert.ToDateTime(User.FindFirst(ClaimTypes.DateOfBirth).Value).ToString("yyyy-MM-dd")" />
+                </div>
+            </div>
+            <div class="row">   
+                <div id="radioBox" class="boxFormRadio col-7 mt-3 mr-4">
+                    <label class="labelForm"><abbr style="color:#ffffff">_</abbr> I am <img id="radioError" style="display:none" src="~/icons/error.svg" />   <abbr style="color:#ffffff">_</abbr> </label>
+                    <div style="white-space:nowrap" class="row mt-3 mb-2 ml-1 mr-1">
+                        <div class="col">
+                            <input @(User.FindFirst(ClaimTypes.Gender).Value == "1" ? "checked" : "") type="radio" name="radio" class="form-check-input" id="woman">
+                            <label class="form-check-label" for="woman">Woman</label>
+                        </div>
+                        <div class="col">
+                            <input @(User.FindFirst(ClaimTypes.Gender).Value == "2" ? "checked" : "") type="radio" name="radio" class="form-check-input" id="man">
+                            <label class="form-check-label" for="man">Man</label>
+                        </div>
+                        <div class="col">
+                            <input @(User.FindFirst(ClaimTypes.Gender).Value == "3" ? "checked" : "") type="radio" name="radio" class="form-check-input" id="notSay">
+                            <label class="form-check-label" for="notSay"><nobr>Prefer to not say</nobr></label>
+                        </div>
+                    </div>
+                </div>
+                <div id="tempForPC" class="col mt-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-7 mt-3" style="padding-left: 0px; padding-right: 0px;">
+                    <input onclick="Save()" type="button" class="btn btn-light btn-block" value="Save changes" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

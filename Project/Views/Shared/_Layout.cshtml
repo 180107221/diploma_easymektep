@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EasyMektep</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/views/shared/layout.css" />
+</head>
+<body>
+    <header>
+        <div class="wrapper">
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion mt-3" id="accordionSidebar">
+                <li class="nav-item">
+                    <a class="nav-link" href="*">
+                        <i>
+                            <img class="mainIcon" src="~/icons/em.svg" />
+                        </i>
+                    </a>
+                </li>
+                <li class="nav-item mt-3">
+                    @if (ViewBag.Title == "Dashboard")
+                    {
+                        <a class="nav-link" href="~/Dashboard/Index">
+                            <i>
+                                <img class="icons" src="~/icons/dashboardIconActive.svg" />
+                            </i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" href="~/Dashboard/Index">
+                            <i>
+                                <img class="icons" src="~/icons/dashboardIcon.svg" />
+                            </i>
+                        </a>
+                    }
+                </li>
+                <li class="nav-item mt-3">
+                    @if (ViewBag.Title == "Projects")
+                    {
+                        <a class="nav-link" href="~/Projects/Index">
+                            <i>
+                                <img class="icons" src="~/icons/projectsIconActive.svg" />
+                            </i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" href="~/Projects/Index">
+                            <i>
+                                <img class="icons" src="~/icons/projectsIcon.svg" />
+                            </i>
+                        </a>
+                    }
+                </li>
+                <li class="nav-item mt-3">
+                    @if (ViewBag.Title == "Statistics")
+                    {
+                        <a class="nav-link" href="~/Statistics/Index">
+                            <i>
+                                <img class="icons" src="~/icons/statisticsIconActive.svg" />
+                            </i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" href="~/Statistics/Index">
+                            <i>
+                                <img class="icons" src="~/icons/statisticsIcon.svg" />
+                            </i>
+                        </a>
+                    }
+                </li>
+                <li class="nav-item mt-3">
+                    @if (ViewBag.Title == "Timer")
+                    {
+                        <a class="nav-link" href="~/Timer/Index">
+                            <i>
+                                <img class="icons" src="~/icons/timerIconActive.svg" />
+                            </i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" href="~/Timer/Index">
+                            <i>
+                                <img class="icons" src="~/icons/timerIcon.svg" />
+                            </i>
+                        </a>
+                    }
+                </li>
+                <li class="nav-item mt-3">
+                    @if (ViewBag.Title == "Settings")
+                    {
+                        <a class="nav-link" href="~/Setting/Index">
+                            <i>
+                                <img class="icons" src="~/icons/settings_futureActive.svg" />
+                            </i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" href="~/Setting/Index">
+                            <i>
+                                <img class="icons" src="~/icons/settings_future.svg" />
+                            </i>
+                        </a>
+                    }
+                </li>
+                <li style="margin-top: 300%;" class="nav-item">
+                   
+                        <a class="nav-link" href="~/Account/Logout">
+                                <i>
+                                    <img style="width:45%" class="icons" src="~/icons/logoutMain.svg" />
+                                </i>
+                        </a>
+                </li>
+            </ul>
+        </div>
+        <div class="wrapperMobile col-9" id="mobileWrapper" style="display:none">
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion ml-3" id="accordionSidebar">                
+                <li class="nav-item mt-3">
+                    @if (ViewBag.Title == "Dashboard")
+                    {
+                    <a class="nav-link" href="~/Dashboard/Index">
+                        <i class="iconsMobileActive">
+                            <img src="~/icons/dashboardIcon.svg" />                            
+                                Dashboard
+                        </i>
+                        
+                    </a>
+                    }
+                    else
+                    {
+                <a class="nav-link" href="~/Dashboard/Index">
+                    <i class="iconsMobile">
+                        <img src="~/icons/dashboardIcon.svg" />
+                        Dashboard
+                    </i>
+                </a>
+                    }
+                </li>
+                <li class="nav-item mt-3">
+                    @if (ViewBag.Title == "Projects")
+                    {
+                    <a class="nav-link" href="~/Projects/Index">
+                        <i class="iconsMobileActive">
+                            <img src="~/icons/dashboardIcon.svg" />
+                            Projects
+                        </i>
+                        
+                    </a>
+                    }
+                    else
+                    {
+                <a class="nav-link" href="~/Projects/Index">
+                    <i class="iconsMobile">
+                        <img src="~/icons/dashboardIcon.svg" />
+                        Projects
+                    </i>
+                    
+                </a>
+                    }
+                </li>
+                <li class="nav-item mt-3">
+                    @if (ViewBag.Title == "Statistics")
+                    {
+                    <a class="nav-link" href="~/Statistics/Index">
+                        <i class="iconsMobileActive">
+                            <img src="~/icons/dashboardIcon.svg" />
+                            Statistics
+                        </i>
+                        
+                    </a>
+                    }
+                    else
+                    {
+                <a class="nav-link" href="~/Statistics/Index">
+                    <i class="iconsMobile">
+                        <img src="~/icons/dashboardIcon.svg" />
+                        Statistics
+                    </i>
+                    
+                </a>
+                    }
+                </li>
+                <li class="nav-item mt-3">
+                    @if (ViewBag.Title == "Timer")
+                    {
+                    <a class="nav-link" href="~/Timer/Index">
+                        <i class="iconsMobileActive">
+                            <img src="~/icons/dashboardIcon.svg" />
+                            Timer
+                        </i>
+                        
+                    </a>
+                    }
+                    else
+                    {
+                <a class="nav-link" href="~/Timer/Index">
+                    <i class="iconsMobile">
+                        <img src="~/icons/dashboardIcon.svg" />
+                        Timer
+                    </i>
+                    
+                </a>
+                    }
+                </li>
+                <li class="nav-item mt-3">
+                    @if (ViewBag.Title == "Settings")
+                    {
+                        <a class="nav-link" href="~/Setting/Index">
+                            <i class="iconsMobileActive">
+                                <img src="~/icons/dashboardIcon.svg" />
+                                Settings
+                            </i>
+
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" href="~/Setting/Index">
+                            <i class="iconsMobile">
+                                <img src="~/icons/dashboardIcon.svg" />
+                                Settings
+                            </i>
+
+                        </a>
+                    }
+                </li>
+            </ul>
+            <div class="logout ml-3">
+                <img src="~/icons/logout.svg"/>
+                Log out
+            </div>
+        </div>
+        <div class="cover" onclick="hideWrapper()" id="cover" style="display:none">
+
+        </div>
+    </header>
+    <section>
+        <div class="container">
+            <main role="main" class="pb-3">
+                <div  class="mb-3 mt-3" style="display:flex">
+                    <div class="col" style="padding-left:0px;">
+                        <p class="title">@ViewBag.Title</p>
+                    </div>
+                    <div class="float-right" style="display:flex;">
+                        <div class="mr-2">
+                            <img class="headImg" src="~/icons/notif.svg" />
+                        </div>
+                        <div class="listHead mr-2">
+                            <img onclick="showWrapper()" class="headImg" src="~/icons/list.svg" />
+                        </div>
+                        <div class="mr-2">
+                            <img class="headImg" src="@User.FindFirst(System.Security.Claims.ClaimTypes.Uri).Value" />
+                        </div>
+                        <div class="user align-self-center mr-2">
+                            @(User.FindFirst(System.Security.Claims.ClaimTypes.Name).Value + " " + User.FindFirst(System.Security.Claims.ClaimTypes.Surname).Value)
+                        </div>
+                        <div class="mr-2 align-self-center">
+                            <div class="dropdown show">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="~/icons/arrow.svg" />
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @RenderBody()
+            </main>
+        </div>
+    </section>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        var oldWidth = window.innerWidth;
+        window.onresize = function () {
+            var newWidth = window.innerWidth;
+            if (newWidth != oldWidth) {
+                oldWidth = newWidth;
+                location.reload();
+            }
+        };
+        function showWrapper() {
+            document.getElementById('mobileWrapper').style.display = '';
+            document.getElementById('cover').style.display = '';
+        }
+        function hideWrapper() {
+            document.getElementById('mobileWrapper').style.display = 'none';
+            document.getElementById('cover').style.display = 'none';
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

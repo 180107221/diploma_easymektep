@@ -1,0 +1,96 @@
+﻿@using EasyMektep.Models;
+@using EasyMektep.Models.Projects;
+@{
+    ViewData["Title"] = "Projects";
+}
+<head>
+    <link rel="stylesheet" href="~/views/projects/index.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+</head>
+@section scripts
+{
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+        function Complete(id) {
+            $.ajax({
+                type: "POST",
+                url: "/Projects/Complete",
+                data: {
+                    id: id
+                },
+
+                success: function (data) {
+                    document.location.reload();
+                }
+            });
+        }
+        function Delete(id) {
+            $.ajax({
+                type: "POST",
+                url: "/Projects/Delete",
+                data: {
+                    id: id
+                },
+
+                success: function (data) {
+                    document.location.reload();
+                }
+            });
+        }
+    </script>
+}
+    <div class="titleLesson">Last opened</div>
+    <div class="lessonPC">
+        @foreach (CourseCardModel item in ViewBag.LastOpened as List<CourseCardModel>)
+        {
+            <div class="task col" style="background-image: url('@item.ImgUrl');">
+                <div class="row-form">
+                    <div onclick="location.href='/Projects/Course?Id=@item.Id'" style="cursor:pointer" class="titleCourse col-8  float-left">@item.Title</div>
+                    <div style="cursor:pointer" class="titleCourseEx col-1 align-self-center float-right" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">...</div>
+                    <div class="dropdown-menu courseDropdown" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item courseDropdownitem" href="#" onclick="Complete(@item.Id)">Mark as complete</a>
+                        <a class="dropdown-item courseDropdownitem" style="color: #EB5757" href="#" onclick="Delete(@item.Id)">Delete course</a>
+                    </div>
+                </div>
+                <div class="footerCourse">@item.Teacher</div>
+            </div>
+        }
+    </div>
+
+    <div class="titleLesson mt-5">New courses</div>
+    <div class="lessonPC">
+        @foreach (CourseCardModel item in ViewBag.NewCourses as List<CourseCardModel>)
+        {
+            <div class="task col" style="background-image: url('@item.ImgUrl');">
+                <div class="row-form">
+                    <div onclick="location.href='/Projects/Course?Id=@item.Id'" style="cursor:pointer" class="titleCourse col-8  float-left">@item.Title</div>
+                    <div style="cursor:pointer" class="titleCourseEx col-1 align-self-center float-right" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">...</div>
+
+                    <div class="dropdown-menu courseDropdown" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item courseDropdownitem" href="#" onclick="Complete(@item.Id)">Mark as complete</a>
+                        <a class="dropdown-item courseDropdownitem" style="color: #EB5757" href="#" onclick="Delete(@item.Id)">Delete course</a>
+                    </div>
+                </div>
+                <div class="footerCourse">@item.Teacher</div>
+            </div>
+        }
+    </div>
+
+    <div class="titleLesson mt-5">All courses</div>
+    <div class="lessonPC">
+        @foreach (CourseCardModel item in ViewBag.AllCourses as List<CourseCardModel>)
+        {
+            <div class="task col" style="background-image: url('@item.ImgUrl');">
+                <div class="row-form">
+                    <div onclick="location.href='/Projects/Course?Id=@item.Id'" style="cursor:pointer" class="titleCourse col-8  float-left">@item.Title</div>
+                    <div style="cursor:pointer" class="titleCourseEx col-1 align-self-center float-right" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">...</div>
+                    <div class="dropdown-menu courseDropdown" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item courseDropdownitem" href="#" onclick="Complete(@item.Id)">Mark as complete</a>
+                        <a class="dropdown-item courseDropdownitem" style="color: #EB5757" href="#" onclick="Delete(@item.Id)">Delete course</a>
+                    </div>
+                </div>
+                <div class="footerCourse">@item.Teacher</div>
+            </div>
+        }
+    </div>

@@ -1,0 +1,283 @@
+﻿@using EasyMektep.Models.Projects
+@model CourseModel
+
+<head>
+    <link rel="stylesheet" href="~/views/projects/course.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+</head>
+
+@section scripts
+{
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (window.matchMedia("(max-width: 1279px)").matches) {
+                var els = document.getElementsByClassName("doAssignment");
+
+                Array.prototype.forEach.call(els, function (el) {
+                    el.className = 'doAssignment col mb-3';
+                });
+
+                @foreach(ForumModel forum in Model.Forums)
+                {
+                    @:document.getElementById('forum @forum.Id').className = 'mr-3 mb-3';
+                }
+                
+                document.getElementById('forums').style.display = '';
+                document.getElementById('allPC').className = '';
+                document.getElementById('toDoPC').className = '';
+                document.getElementById('inProgressPC').className = '';
+                document.getElementById('donePC').className = '';
+            }
+        });
+        function GetAssignment(state) {
+            if (state == 1) {
+                document.getElementById('allPC').style.display = '';
+                document.getElementById('toDoPC').style.display = 'none';
+                document.getElementById('inProgressPC').style.display = 'none';
+                document.getElementById('donePC').style.display = 'none';
+
+                document.getElementById('all').className = 'assignmentAct col'
+                document.getElementById('toDo').className = 'assignment col'
+                document.getElementById('inProgress').className = 'assignment col'
+                document.getElementById('done').className = 'assignment col'
+            }
+            else if (state == 2) {
+                document.getElementById('allPC').style.display = 'none';
+                document.getElementById('toDoPC').style.display = '';
+                document.getElementById('inProgressPC').style.display = 'none';
+                document.getElementById('donePC').style.display = 'none';
+
+                document.getElementById('all').className = 'assignment col'
+                document.getElementById('toDo').className = 'assignmentAct col'
+                document.getElementById('inProgress').className = 'assignment col'
+                document.getElementById('done').className = 'assignment col'
+            }
+            else if (state == 3) {
+                document.getElementById('allPC').style.display = 'none';
+                document.getElementById('toDoPC').style.display = 'none';
+                document.getElementById('inProgressPC').style.display = '';
+                document.getElementById('donePC').style.display = 'none';
+
+                document.getElementById('all').className = 'assignment col'
+                document.getElementById('toDo').className = 'assignment col'
+                document.getElementById('inProgress').className = 'assignmentAct col'
+                document.getElementById('done').className = 'assignment col'
+            }
+            else if (state == 4) {
+                document.getElementById('allPC').style.display = 'none';
+                document.getElementById('toDoPC').style.display = 'none';
+                document.getElementById('inProgressPC').style.display = 'none';
+                document.getElementById('donePC').style.display = '';
+
+                document.getElementById('all').className = 'assignment col'
+                document.getElementById('toDo').className = 'assignment col'
+                document.getElementById('inProgress').className = 'assignment col'
+                document.getElementById('done').className = 'assignmentAct col'
+            }
+        }
+        function Complete(id) {
+            $.ajax({
+                type: "POST",
+                url: "/Projects/CompleteAssignment",
+                data: {
+                    id: id
+                },
+
+                success: function (data) {
+                    document.location.reload();
+                }
+            });
+        }
+        function Delete(id) {
+            $.ajax({
+                type: "POST",
+                url: "/Projects/DeleteAssignment",
+                data: {
+                    id: id
+                },
+
+                success: function (data) {
+                    document.location.reload();
+                }
+            });
+        }
+    </script>
+}
+<div>
+    <div class="mainCourse">
+        <div class="title">@Model.Title</div>
+        <div class="mt-3  mb-5" style="display:flex">
+            @foreach (string item in Model.Description)
+            {
+                <div class="description col" style="padding-left:0px;">
+                    @item
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="mainCourse">
+
+        <div class="title mt-3 mb-3">In this course</div>
+        <div id="forums" class="mt-3  mb-5" style="display:flex">
+            @foreach (ForumModel item in Model.Forums)
+            {
+                <div class="col" style="display: inline-flex;padding-left: 0px;">
+                    <div class="col-2" id="forum @item.Id" style="padding-left:0px;">
+                        <img src="@item.ImgUrl" />
+                    </div>
+                    <div class="col" style="padding-left:0px;">
+                        <div class="titleForum mt-2">@item.Title</div>
+                        <div class="descriptionForum">
+                            @Html.Raw(item.Description)
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+
+    <div class="mt-5" style="display:inline-flex">
+        <div id="all" class="assignmentAct col" onclick="GetAssignment(1)">ALL</div>
+        <div id="toDo" class="assignment col" onclick="GetAssignment(2)">TO DO</div>
+        <div id="inProgress" class="assignment col" onclick="GetAssignment(3)">IN PROGRESS</div>
+        <div id="done" class="assignment col" onclick="GetAssignment(4)">DONE</div>
+    </div>
+
+    <div class="mt-5">
+        <div class="row" id="allPC">
+            @foreach (AssignmentModel item in Model.Assignments)
+            {
+                <div class="doAssignment col-3 mr-3 mb-3">
+                    <div class="row mt-3 assignmentHead">
+                        <div class="col" onclick="location.href='/Projects/Assignment?Id=@item.Id'" style="cursor:pointer;font-size: 16px;">@item.Title</div>
+                        <div class="col-4" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer; text-align: right;">...</div>
+                        <div class="dropdown-menu assignmentDropdown" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item assignmentDropdownitem" href="#" onclick="Complete(@item.Id)">Mark as complete</a>
+                            <a class="dropdown-item assignmentDropdownitem" style="color: #EB5757" href="#" onclick="Delete(@item.Id)">Delete</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="assignmentDate col">@(item.Date.ToString("HH:mm") + "/" +item.Date.DayOfWeek+ ", " + item.Date.Day + " " + System.Globalization.CultureInfo.GetCultureInfo("en-GB").DateTimeFormat.GetMonthName(item.Date.Month) )</div>
+
+                        @if (item.Status == "in progress")
+                        {
+                            <div style="color: #FB9818" class="assignmentStatus col-4">@item.Status</div>
+                        }
+                        else if (item.Status == "done")
+                        {
+                            <div style="color: #37C24E" class="assignmentStatus col-4">@item.Status</div>
+                        }
+                        else if (item.Status == "time is up")
+                        {
+                            <div style="color: #FC514E" class="assignmentStatus col-4">@item.Status</div>
+                        }
+                        else if (item.Status == "to do")
+                        {
+                            <div style="color: yellow" class="assignmentStatus col-4">@item.Status</div>
+                        }
+                    </div>
+                    <div class="row mt-3 mb-3">
+                        <div class="col" style="display:flex">
+                            <div class="assignmentProgress" style="background: #6B408C;width: @(item.Progress+"%");">
+                            </div>
+                            <div class="assignmentProgress"  style="background: #F1F1F1;width: @(100-item.Progress+"%");">
+                            </div>
+                        </div>
+                        <div class="col-3" style="font-weight: 500; font-size: 13px; text-align: right;">@item.Progress%</div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div id="toDoPC" class="row" style="display:none">
+            @foreach (AssignmentModel item in Model.Assignments.Where(m => m.Status == "to do").ToList())
+            {
+            <div class="doAssignment col-3 mr-3 mb-3">
+                <div class="row mt-3 assignmentHead">
+                    <div class="col" onclick="location.href='/Projects/Assignment?Id=@item.Id'" style="cursor:pointer;font-size: 16px;">@item.Title</div>
+
+                    <div class="col-4" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer; text-align: right;">...</div>
+                    <div class="dropdown-menu assignmentDropdown" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item assignmentDropdownitem" href="#" onclick="Complete(@item.Id)">Mark as complete</a>
+                        <a class="dropdown-item assignmentDropdownitem" style="color: #EB5757" href="#" onclick="Delete(@item.Id)">Delete</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="assignmentDate col">@(item.Date.ToString("HH:mm") + "/" +item.Date.DayOfWeek+ ", " + item.Date.Day + " " + System.Globalization.CultureInfo.GetCultureInfo("en-GB").DateTimeFormat.GetMonthName(item.Date.Month) )</div>
+                     <div style="color: yellow" class="assignmentStatus col-4">@item.Status</div>
+                </div>
+                <div class="row mt-3 mb-3">
+                    <div class="col" style="display:flex">
+                        <div class="assignmentProgress" style="background: #6B408C;width: @(item.Progress+"%");">
+                        </div>
+                        <div class="assignmentProgress" style="background: #F1F1F1;width: @(100-item.Progress+"%");">
+                        </div>
+                    </div>
+                    <div class="col-3" style="font-weight: 500; font-size: 13px; text-align: right;">@item.Progress%</div>
+                </div>
+            </div>
+            }
+        </div>
+        <div id="inProgressPC" class="row" style="display:none">
+            @foreach (AssignmentModel item in Model.Assignments.Where(m => m.Status == "in progress").ToList())
+            {
+            <div class="doAssignment col-3 mr-3 mb-3">
+                <div class="row mt-3 assignmentHead">
+                    <div class="col" onclick="location.href='/Projects/Assignment?Id=@item.Id'" style="cursor:pointer;font-size: 16px;">@item.Title</div>
+
+                    <div class="col-4" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer; text-align: right;">...</div>
+                    <div class="dropdown-menu assignmentDropdown" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item assignmentDropdownitem" href="#" onclick="Complete(@item.Id)">Mark as complete</a>
+                        <a class="dropdown-item assignmentDropdownitem" style="color: #EB5757" href="#" onclick="Delete(@item.Id)">Delete</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="assignmentDate col">@(item.Date.ToString("HH:mm") + "/" +item.Date.DayOfWeek+ ", " + item.Date.Day + " " + System.Globalization.CultureInfo.GetCultureInfo("en-GB").DateTimeFormat.GetMonthName(item.Date.Month) )</div>
+                    <div style="color: #FB9818" class="assignmentStatus col-4">@item.Status</div>
+                </div>
+                <div class="row mt-3 mb-3">
+                    <div class="col" style="display:flex">
+                        <div class="assignmentProgress" style="background: #6B408C;width: @(item.Progress+"%");">
+                        </div>
+                        <div class="assignmentProgress" style="background: #F1F1F1;width: @(100-item.Progress+"%");">
+                        </div>
+                    </div>
+                    <div class="col-3" style="font-weight: 500; font-size: 13px; text-align: right;">@item.Progress%</div>
+                </div>
+            </div>
+            }
+        </div>
+        <div id="donePC" class="row" style="display:none">
+            @foreach (AssignmentModel item in Model.Assignments.Where(m => m.Status == "done").ToList())
+            {
+            <div class="doAssignment col-3 mr-3 mb-3">
+                <div class="row mt-3 assignmentHead">
+                    <div class="col" onclick="location.href='/Projects/Assignment?Id=@item.Id'" style="cursor:pointer;font-size: 16px;">@item.Title</div>
+
+                    <div class="col-4" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer; text-align: right;">...</div>
+                    <div class="dropdown-menu assignmentDropdown" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item assignmentDropdownitem" href="#" onclick="Complete(@item.Id)">Mark as complete</a>
+                        <a class="dropdown-item assignmentDropdownitem" style="color: #EB5757" href="#" onclick="Delete(@item.Id)">Delete</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="assignmentDate col">@(item.Date.ToString("HH:mm") + "/" +item.Date.DayOfWeek+ ", " + item.Date.Day + " " + System.Globalization.CultureInfo.GetCultureInfo("en-GB").DateTimeFormat.GetMonthName(item.Date.Month) )</div>
+                    <div style="color: #37C24E" class="assignmentStatus col-4">@item.Status</div>
+                </div>
+                <div class="row mt-3 mb-3">
+                    <div class="col" style="display:flex">
+                        <div class="assignmentProgress" style="background: #6B408C;width: @(item.Progress+"%");">
+                        </div>
+                        <div class="assignmentProgress" style="background: #F1F1F1;width: @(100-item.Progress+"%");">
+                        </div>
+                    </div>
+                    <div class="col-3" style="font-weight: 500; font-size: 13px; text-align: right;">@item.Progress%</div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

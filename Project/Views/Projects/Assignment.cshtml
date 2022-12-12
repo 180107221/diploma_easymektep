@@ -1,0 +1,253 @@
+@model EasyMektep.Models.Projects.AssignmentCardModel
+<head>
+    <link rel="stylesheet" href="~/views/projects/assignment.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+</head>
+@section scripts
+{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (window.matchMedia("(max-width: 1279px)").matches) {
+                var els = document.getElementsByClassName("col-2");
+                Array.prototype.forEach.call(els, function (el) {
+                    el.className = 'col';
+                });
+            }
+        });
+        function handleFiles(files) {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var fcolRight = document.createElement("div");
+                fcolRight.classList.add("colRight");
+                fcolRight.innerHTML = '<img class="trash" src="/icons/trash.svg" onclick="Remove(' + "'divObjId" +i+"'"+')"/>';
+                var div = document.createElement("div");
+                div.classList.add("divObj");
+                div.id = "divObjId" + i;
+                var fcol = document.createElement("div");
+                fcol.classList.add("colObj");
+                var fname = document.createElement("div");
+                fname.innerText = file.name;
+                fname.classList.add("fname");
+                var inputFname = document.createElement("input");
+                inputFname.type = 'text';
+                inputFname.style.display = 'none';
+                inputFname.value = file.name;
+                inputFname.name = 'fname';
+                var fsize = document.createElement("div");
+                fsize.innerText = Math.round(file.size / 1024) + " KB";
+                fsize.classList.add("fsize");
+                if (file.type.includes("image")==false) {
+                    var imgEx = document.createElement("img");
+                    imgEx.src = "/icons/newFile.svg";
+                    imgEx.classList.add("obj");
+                    var f = document.createElement("div");
+                    f.appendChild(imgEx);
+                    f.classList.add("colObj");
+                    div.appendChild(f);
+                }
+                else {
+                    var img = document.createElement("img");
+                    img.classList.add("obj");
+                    img.file = file;
+                    var f = document.createElement("div");
+                    f.appendChild(img);
+                    f.classList.add("colObj");
+                    div.appendChild(f);
+                }
+                fcol.appendChild(inputFname);
+                fcol.appendChild(fname);
+                fcol.appendChild(fsize);
+                div.appendChild(fcol);
+                div.appendChild(fcolRight);
+                let preview = document.getElementById('preview');
+                preview.appendChild(div); // Предполагается, что "preview" это div, в котором будет отображаться содержимое.
+                var reader = new FileReader();
+                reader.onload = (function (aImg) { return function (e) { aImg.src = e.target.result; }; })(img);
+                reader.readAsDataURL(file);
+            }
+        }
+        function GetAssignment(state) {
+            if (state == 1) {
+                document.getElementById('instruction').style.display = '';
+                document.getElementById('submission').style.display = 'none';
+                document.getElementById('instructions').className = 'assignmentAct col'
+                document.getElementById('mySubmission').className = 'assignment col'
+            }
+            else {
+                document.getElementById('instruction').style.display = 'none';
+                document.getElementById('submission').style.display = '';
+                document.getElementById('instructions').className = 'assignment col'
+                document.getElementById('mySubmission').className = 'assignmentAct col'
+            }
+        }
+        function Show(img) {
+            var modal = document.getElementById("myModal");
+            var modalImg = document.getElementById("img01");
+            modal.style.display = "block";
+            modalImg.src = img.src;
+            modal.onclick = function () {
+                modal.style.display = "none";
+            }
+        }
+        function AddSubmittion() {
+            var modal = document.getElementById("modalAdd");
+            var modalBack = document.getElementById("modalBack");
+            modal.style.display = "block";
+            modalBack.style.display = "block";
+            modalBack.onclick = function () {
+                modal.style.display = "none";
+            }
+        }
+        function Remove(id) {
+            var el = document.getElementById(id);
+            el.remove();
+        }
+        function getBase64(file) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                console.log(reader.result);
+            };
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
+        }
+    </script>
+}
+
+<div class="mt-5" style="display:inline-flex">
+    <div id="instructions" class="assignmentAct col" onclick="GetAssignment(1)">Instructions</div>
+    <div id="mySubmission" class="assignment col" onclick="GetAssignment(2)">My submission</div>
+</div>
+
+<div class="mt-5" id="instruction">
+    <div>
+        <div style="display:inline-flex">
+            <div style="padding-left: 0px;font-weight:500;font-size: 16px;" class="col">Date</div>
+            <div style="padding-left: 0px;font-size: 16px;color: #939DA8" class="col">@Model.Date.ToString("dd.MM.yyyy")</div>
+        </div>
+    </div>
+    <div>
+        <div style="display:inline-flex">
+            <div style="padding-left: 0px;font-weight:500;font-size: 16px;" class="col">Time</div>
+            <div style="padding-left: 0px; font-size: 16px; color: #939DA8" class="col">@Model.Date.ToString("HH:mm")</div>
+        </div>
+    </div>
+    <div class="mt-3">Description</div>
+    <div>
+        @Html.Raw(Model.Description)
+    </div>
+</div>
+
+<div class="mt-5" id="submission" style="display:none">
+    @if (Model.UrlItems == null)
+    {
+        <center class="mt-5">
+            <div style="color:#939DA8;font-size: 24px;">No Summission yet!</div>
+            <div>
+                <img src="~/img/AddFile.svg" />
+            </div>
+            <div class="col-2">
+                <button onclick="AddSubmittion()" class="btn btn-primary btn-block" style="background: #6B408C; border-radius: 4px; font-weight: 600; font-size: 14px; color: #FFFFFF; ">
+                    Add submittion
+                </button>
+            </div>
+        </center>
+    }
+    else
+    {
+        <div>@Model.Submission</div>
+        <div class="mt-3" style="display: table-caption">
+            @foreach (string item in Model.UrlItems)
+            {
+                <div class="mt-2" style="display: inline-flex;border: 1px solid #F6F6F9;border-radius: 4px;">
+                    <div class="col-9" style="display:inline-flex;white-space:nowrap">
+                        <div><img width="40" onclick="Show(this)" style="cursor:pointer;" height="40" src="@item" /></div>
+                        <div class="ml-2 mt-2">@item.Replace("/items/", "")</div>
+                    </div>
+                    <div class="col-1 mt-2">
+                        <img style="cursor: pointer;" src="~/icons/trash.svg" />
+                    </div>
+                </div>
+
+            }
+        </div>
+        <div class="mt-5" style="display:flex">
+            <div class="col-3">
+                <button style="background: #6B408C;border-radius: 4px;font-weight: 600;font-size: 14px;color: #FFFFFF;" class="btn btn-primary btn-block">Unsubmit</button>
+            </div>
+            <div class="col-3">
+                <button style="border: 1px solid #6B408C;box-sizing: border-box;border-radius: 4px;font-size: 14px;color: #6B408C;white-space: nowrap" class="btn btn-light btn-block">Edit submition</button>
+            </div>
+        </div>
+    }
+
+</div>
+
+<div id="myModal" class="modal" style="background: #22222280;">
+    <img class="modal-content" id="img01" style="width:auto;height:70%;margin-top:5%">
+</div>
+<div id="modalAdd" class="modal">
+    <div id="modalBack" class="modalBack">
+    </div>
+        <div class="block">
+            <form  asp-action="Add" asp-controller="Projects" method="post" enctype = "multipart/form-data">
+                <div class="blockRow">
+                    <div class="col">
+                        <div style="font-size: 14px;color: #939DA8;">Add submission</div>
+                        <div>
+                            <div class="dropBlock file-upload-wrapper mt-3">
+                                <center>
+                                    <div>
+                                        <img src="~/img/dropFile.svg" />
+                                    </div>
+                                    <div>
+                                        <div class="col"><img /></div>
+                                        <div class="col" style="color: #939DA8;font-size: 14px;font-weight:400;">
+                                            <img src="~/icons/download.svg" />
+                                            Drop your file here or <p style="color: #6B408C;font-size: 14px; font-weight: 500">Browse</p>
+                                        </div>
+                                    </div>
+
+                                </center>
+
+
+
+                                <input class="file-input" id="fileElem" name="files" type="file" multiple onchange="handleFiles(this.files)">
+                            </div>
+
+
+                            <div style="padding-bottom: 3%;">
+                                <div style="padding-left:0px;padding-right:0px;" class="col" id="preview">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input name="id" style="display:none" type="text" value="@Model.Id" />
+                    <div class="col mt-5">
+                        <div class="boxForm">
+                            <label class="labelForm ml-2"><abbr style="color:#ffffff">_</abbr> Your id <abbr style="color:#ffffff">_</abbr></label>
+                            <input id="yourId" name="yourId" placeholder="Enter your first name" class="form-control mt-2" type="text" />
+
+                        </div>
+                        <div class="boxForm mt-4" style="height: 70%; ">
+                            <label class="labelForm ml-2"><abbr style="color:#ffffff">_</abbr> Description <abbr style="color:#ffffff">_</abbr></label>
+
+                            <textarea id="description" name="description" style="height: 80%;" placeholder="Enter your first name" class="form-control mt-2"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <button class="btn btn-primary btn-block" style="background: #6B408C; border-radius: 4px; font-weight: 600; font-size: 14px; color: #FFFFFF; ">
+                        Add
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    
+    
+</div>

@@ -1,0 +1,164 @@
+@{
+    ViewData["Title"] = "Timer";
+}
+@section scripts
+{
+
+    <script type="text/javascript">
+        function setTickHour(i) {
+            document.getElementById('setHour').innerHTML = i;
+        }
+        function setTickMin(i) {
+            document.getElementById('setMin').innerHTML = i;
+        }
+        function setTickSec(i) {
+            document.getElementById('setSec').innerHTML = i;
+        }
+        function stopTimer() {
+            document.getElementById('startTimer').style.display = 'flex';
+            document.getElementById('stopTimer').style.display = 'none';
+            document.getElementById('hour').innerHTML = 0;
+            document.getElementById('min').innerHTML = 0;
+            document.getElementById('sec').innerHTML = 0;
+        }
+        function startTimer() {            
+            let h = document.getElementById('hour').innerHTML;
+            let m = document.getElementById('min').innerHTML;
+            let s = document.getElementById('sec').innerHTML;
+            if (s > 0) {
+                document.getElementById('sec').innerHTML = s - 1;
+            }
+            if (s == 0 && m != 0) {
+                document.getElementById('sec').innerHTML = 59;
+                document.getElementById('min').innerHTML = m-1;
+            }
+            if (s == 0 && m == 0 && h!= 0) {
+                document.getElementById('sec').innerHTML = 59;
+                document.getElementById('min').innerHTML = 59;
+                document.getElementById('hour').innerHTML = h - 1;
+            }
+            if (h == 0 && m == 0 && s == 0) {
+                document.getElementById('startTimer').style.display = 'flex';
+                document.getElementById('stopTimer').style.display = 'none';
+            }
+            else {
+                document.getElementById('startTimer').style.display = 'none';
+                document.getElementById('stopTimer').style.display = '';
+                setTimeout(startTimer, 1000);
+
+            }
+        }
+        function set() {
+            document.getElementById('hour').innerHTML = document.getElementById('setHour').innerHTML;
+            document.getElementById('min').innerHTML = document.getElementById('setMin').innerHTML;
+            document.getElementById('sec').innerHTML = document.getElementById('setSec').innerHTML;
+            document.getElementById('setHour').innerHTML = '0';
+            document.getElementById('setMin').innerHTML = '0';
+            document.getElementById('setSec').innerHTML = '0';
+            document.getElementById('setTimer').style.display = 'none';
+            document.getElementById('cover').style.display = 'none';
+        }
+        function setTimer() {
+            document.getElementById('setTimer').style.display = '';
+            document.getElementById('cover').style.display = '';
+        }
+        function hideWrapper() {
+            document.getElementById('setHour').innerHTML = '0';
+            document.getElementById('setMin').innerHTML = '0';
+            document.getElementById('setSec').innerHTML = '0';
+            document.getElementById('setTimer').style.display = 'none';
+            document.getElementById('cover').style.display = 'none';
+        }
+        function closeSetTimer() {
+            document.getElementById('setHour').innerHTML = '0';
+            document.getElementById('setMin').innerHTML = '0';
+            document.getElementById('setSec').innerHTML = '0';
+            document.getElementById('setTimer').style.display = 'none';
+            document.getElementById('cover').style.display = 'none';
+        }
+    </script>
+}
+<head>
+    <link rel="stylesheet" href="~/views/timer/index.css" />
+</head>
+<div class="cover" onclick="hideWrapper()" id="cover" style="display:none">
+
+</div>
+<div class="timerDesktop">
+    <div id="setTimer" style="display:none">
+        <div onclick="closeSetTimer()" class="closeBtnImg float-right">
+            <img src="~/icons/closeButton.svg" />
+        </div>
+        <div class="set mt-5">
+            <div class="text-center" style="padding-top: 10%; display: flex">
+                <div class="col">
+                    <div class="setTick" id="setHour">0</div>
+                    <div class="nameTick">hrs</div>
+                    <div class="scroll">
+                        @for (int i = 1; i <= 10; i++)
+                        {
+                            <div onclick="setTickHour(@i)" class="tickS">@i</div>
+                        }
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="setTick" id="setMin">0</div>
+                    <div class="nameTick">min</div>
+                    <div class="scroll">
+                        @for (int i = 1; i <= 59; i++)
+                        {
+                            <div onclick="setTickMin(@i)" class="tickS">@i</div>
+                        }
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="setTick" id="setSec">0</div>
+                    <div class="nameTick">sec</div>
+                    <center>
+                        <div class="scroll">
+                            @for (int i = 1; i <= 59; i++)
+                            {
+                                <div onclick="setTickSec(@i)" class="tickS">@i</div>
+                            }
+                        </div>
+                    </center>
+                </div>
+            </div>
+            <div style="padding-bottom: 10%; margin-left: 10%; margin-right: 10%; margin-top: 30%;">
+                <button onclick="set()" class="btnSet btn btn-light btn-block" style="color:#ffffff">Set</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="text-center mainTimer">
+        <div>
+            <div style="display:flex">
+                <div class="tick col">
+                    <div id="hour">0</div>
+                    <div>hrs</div>
+                </div>
+                <div class="tick col mr-5 ml-5">
+                    <div id="min">0</div>
+                    <div>min</div>
+                </div>
+                <div class="tick col">
+                    <div id="sec">0</div>
+                    <div>sec</div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div id="startTimer" class="mt-5" style="display:flex">
+                <div class="col" style="padding-left: 0px;">
+                    <button onclick="startTimer()" class="btnTickStart btn btn-light btn-block">Start timer</button>
+                </div>
+                <div class="col" style="padding-right: 0px;">
+                    <button onclick="setTimer()" class="btnTickSet btn btn-light btn-block">Set the time</button>
+                </div>
+            </div>
+            <div id="stopTimer" class="col mt-5" style="display:none">
+                <button onclick="stopTimer()" class="btnTickStop btn btn-light btn-block">Stop</button>
+            </div>
+        </div>
+    </div>
+</div>
